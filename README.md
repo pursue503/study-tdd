@@ -1,7 +1,7 @@
-# TDD(Test Driven Development) 학습을 위한 레포지토리입니다.
+# TDD(Test Driven Development) 실습 프로젝트
 
 ## 👋️️️️️개요
-간단한 커뮤니티를 제작하며 TDD 학습을 위한 레포입니다.
+간단한 커뮤니티를 제작하며 TDD 학습을 위한 레포지토리.
 
 ## ⚒️사용 기술
 
@@ -16,7 +16,7 @@
 
 **브랜치 관리 전략**
 
-저희는 많은 깃 브랜치 관리 전략 중 하나인 gitflow 를 도입하여 개발을 진행합니다.
+많은 깃 브랜치 관리 전략 중 하나인 git-flow 를 도입하여 개발을 진행합니다.
 
 <br>
 
@@ -24,7 +24,7 @@
 
 하나의 기능은 하나의 pull_request 를 생성합니다.
 
-해당 pull_request 에 대하여 다른 개발자가 리뷰를 하여 머지하는 습관을 학습합니다.
+해당 pull_request 에 대하여 다른 개발자가 리뷰를 하여 병합하는 습관을 연습합니다.
 
 <br>
 
@@ -125,13 +125,13 @@ code with me 를 활용하여 어렵거나 힘든 기능을
 - 예약어(if, switch, for, while 등) 작성 후 스페이스로 한 칸 띄운다. 괄호를 닫은 후 다시 스페이스를 한 칸 띄운다.
 - 필드변수는 모두 메서드 바로 아래에 함께 작성하여 모아둔다.
 
-### class 작성 방식
+### ✋ class 작성 방식
 - 필드 변수
 - 생성자
 - override 메소드
 - public 메소드
 - private 메소드
--
+
 <br> 예시는 아래와 같다.
 
 
@@ -156,7 +156,6 @@ public class Main {
  * 
  * @author 작업자1
  * @author 작업자2
- * 
  */
 public class Main {
 
@@ -167,7 +166,7 @@ public class Main {
      * @author 작업자1
      */
     public static void main(String... args) {
-        int result = sum(Integer.parseInt(args[0]));
+        int result = sum(Integer.parseInt(args[1]));
         System.out.println(result);
     }
 
