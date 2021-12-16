@@ -41,7 +41,28 @@ code with me 를 활용하여 어렵거나 힘든 기능을
 
 ---
 
+
+
+### ✏️회원
+- 회원 가입
+  - POST /members MemberController#signUp(@RequestBody MemberSignUpDTO)
+- 회원정보 수정
+  - PUT /members MemberController#updateMember(@RequestBody MemberInfoUpdateDTO)
+- 비밀번호 수정
+  - PATCH /members MemberController#updatePassword(@RequestBody MemberChangePasswordDTO)
+- 회원탈퇴
+  - DELETE /members MemberController#quitMember()
+- 조회
+  - GET /members MemberController#fetchMember()
+- 로그인
+  - POST /members/sign-in MemberController#signIn()
+- 회원 아이디 찾기
+  - GET /members/find-id MemberController#findId()
+- 비밀번호 찾기
+  - GET /members/find-pw MemberController#findPw()
+
 ### ✏️게시판
+
 - 쓰기
 - 수정
 - 삭제
@@ -61,17 +82,6 @@ code with me 를 활용하여 어렵거나 힘든 기능을
 - 파일(이미지)
 - 업다운로드
 - 삭제
-
-### ✏️회원
-- 회원 가입
-- 회원정보 수정
-- 회원탈퇴
-- 조회
-- 로그인
-- 회원 로그인 유지
-- 회원 아이디 찾기
-- 비밀번호 찾기
-
 
 ## 프로젝트 기능 요구 사항
 
