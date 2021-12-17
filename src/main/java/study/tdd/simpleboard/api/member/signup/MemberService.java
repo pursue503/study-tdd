@@ -1,41 +1,39 @@
 package study.tdd.simpleboard.api.member.signup;
 
 public class MemberService {
+
+    private final int VALID_NICK_NAME_LENGTH = 3;
+
     public boolean validateSignUpParam(String nickname, String password) {
         return nickname != null && password != null;
     }
 
     public boolean validateNickname(String nickname) {
-        if (nickname.length() >= 3) {
-
-            int numberCount = 0;
-            int englishCount = 0;
-
-            for (char c : nickname.toCharArray()) {
-                if ((c >= 48 && c <= 57)) {
-                    numberCount++;
-                    continue;
-                }
-
-                if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122)) {
-                    englishCount++;
-                    continue;
-                }
-
-                return false;
-
-            }
-
-
-            if (englishCount == 0) {
-                return false;
-            }
-            if (numberCount == 0) {
-                return false;
-            }
-
-            return true;
+        if (!validEnglish(nickname)) {
+            return false;
         }
-        return false;
+        if (!validNumber(nickname)) {
+            return false;
+        }
+        if (!validLength(nickname)) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validLength(String nickname) {
+        return nickname.length() >= VALID_NICK_NAME_LENGTH;
+    }
+
+    private boolean validEnglish(String nickname) {
+        return nickname.chars()
+                .filter(c -> (c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+                .count() != 0;
+    }
+
+    private boolean validNumber(String nickname) {
+        return nickname.chars()
+                .filter(c -> c >= 48 && c<= 57)
+                .count() != 0;
     }
 }
