@@ -36,6 +36,15 @@ public class MemberServiceTest {
             MemberService memberService = new MemberService();
             assertThat(memberService.validateSignUpParam(nickname, null)).isFalse();
         }
+
+        @ParameterizedTest
+        @ValueSource(strings = {"nickname123", "informix123", "JaeHyun111"})
+        @DisplayName("닉네임이 최소 3글자 이상일경우 True 반환을 확인한다.")
+        public void validateNickname(String nickname) {
+            MemberService memberService = new MemberService();
+            assertThat(memberService.validateNickname(nickname)).isTrue();
+        }
+
     }
 
 
