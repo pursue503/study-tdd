@@ -89,10 +89,10 @@ code with me 를 활용하여 어렵거나 힘든 기능을
 
 ### ✏️회원
 - [x] 닉네임, 비밀번호, 비밀번호 확인을 입력하기 #validateSignUpParam
-- [ ] 닉네임 검증: #validateNickname(String username)
+- [x] 닉네임 검증: #validateNickname(String username)
   - [x] 최소 3자 이상
-  - [ ] 알파벳 대소문자(a~z, A~Z)
-  - [ ] 숫자(0~9)로 구성하기
+  - [x] 알파벳 대소문자(a~z, A~Z)
+  - [x] 숫자(0~9)로 구성하기
 - [ ] 비밀번호 규칙검증: #validatePassword(String password)
   - [ ] 최소 8자 이상
   - [ ] 대문자 하나이상 포함
