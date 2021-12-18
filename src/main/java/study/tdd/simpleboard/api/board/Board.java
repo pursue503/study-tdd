@@ -2,11 +2,9 @@ package study.tdd.simpleboard.api.board;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import study.tdd.simpleboard.api.member.entity.Member;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
@@ -18,5 +16,10 @@ public class Board {
     private Long boardId;
 
     private String boardtitle;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
 
 }
