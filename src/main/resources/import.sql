@@ -1,0 +1,15 @@
+insert into MEMBER (member_email, nickname, password) values ('find1086@mail.com', 'a', '1234');
+insert into MEMBER (member_email, nickname, password) values ('pursue503@mail.com', 'a', '1234');
+insert into MEMBER (member_email, nickname, password) values ('aa@mail.com', 'a', '1234');
+insert into MEMBER (member_email, nickname, password) values ('bb@mail.com', 'b', '1234');
+insert into MEMBER (member_email, nickname, password) values ('cc@mail.com', 'c', '1234');
+insert into MEMBER (member_email, nickname, password) values ('dd@mail.com', 'd', '1234');
+insert into MEMBER (member_email, nickname, password) values ('ee@mail.com', 'e', '1234');
+insert into MEMBER (member_email, nickname, password) values ('ff@mail.com', 'f', '1234');
+insert into MEMBER (member_email, nickname, password) values ('gg@mail.com', 'g', '1234');
+insert into MEMBER (member_email, nickname, password) values ('hh@mail.com', 'h', '1234');
+insert into MEMBER (member_email, nickname, password) values ('ii@mail.com', 'i', '1234');
+insert into MEMBER (member_email, nickname, password) values ('jj@mail.com', 'j', '1234');
+insert into MEMBER (member_email, nickname, password) values ('kk@mail.com', 'k', '1234');
+insert into MEMBER (member_email, nickname, password) values ('mm@mail.com', 'm', '1234');
+insert into MEMBER (member_email, nickname, password) values ('pp@mail.com', 'p', '1234');
