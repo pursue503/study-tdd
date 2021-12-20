@@ -1,7 +1,6 @@
-package study.tdd.simpleboard.api.member.signup;
+package study.tdd.simpleboard.api.member.entity;
 
 import org.junit.jupiter.api.Test;
-import study.tdd.simpleboard.api.member.entity.Member;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

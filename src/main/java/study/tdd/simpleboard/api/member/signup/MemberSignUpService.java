@@ -1,6 +1,6 @@
 package study.tdd.simpleboard.api.member.signup;
 
-public class MemberService {
+public class MemberSignUpService {
 
     private final int VALID_NICK_NAME_LENGTH = 3;
 

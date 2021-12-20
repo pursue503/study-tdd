@@ -1,4 +1,4 @@
-package study.tdd.simpleboard.api.member.signup;
+package study.tdd.simpleboard.api.member.entity;
 
 import study.tdd.simpleboard.api.member.entity.Member;
 
