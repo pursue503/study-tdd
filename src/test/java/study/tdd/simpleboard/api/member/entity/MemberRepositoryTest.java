@@ -4,24 +4,26 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import javax.persistence.EntityManager;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 public class MemberRepositoryTest {
 
-    @Test
-    public void createMemberRepository() {
-        MemberRepository memberRepository = new MemberRepository();
-        assertThat(memberRepository).isEqualTo(memberRepository);
-    }
+    @Autowired
+    MemberRepository memberRepository;
+
+    @Autowired
+    EntityManager entityManager;
 
     @Test
     public void saveMember() {
         // given
-        MemberRepository memberRepository = new MemberRepository();
         String nickname = "Informix";
         String password = "q1w2e3";
-        Member wantToSaveMember = new Member(nickname, password);
+        String memberEmail = "abc1234@naber.com";
+        Member wantToSaveMember = new Member(memberEmail, nickname, password);
 
         // when
         Member savedMember = memberRepository.save(wantToSaveMember);
@@ -34,14 +36,19 @@ public class MemberRepositoryTest {
     @Test
     public void findMember() {
         // given
-        MemberRepository memberRepository = new MemberRepository();
         String nickname = "Informix";
         String password = "q1w2e3";
-        Member wantToSaveMember = new Member(nickname, password);
+        String memberEmail = "abc1234@naver.com";
+        Member wantToSaveMember = new Member(memberEmail, nickname, password);
 
         // when
-        memberRepository.save(wantToSaveMember);
-        Member findMember = memberRepository.findByNickname(nickname);
+        Member saveMember = memberRepository.save(wantToSaveMember);
+
+        // 영속성 컨텍스트 저장하고 비우기
+        entityManager.flush();
+        entityManager.clear();
+
+        Member findMember = memberRepository.findById(saveMember.getMemberId()).orElseThrow(NullPointerException::new);
 
         // then
         assertThat(findMember).isInstanceOf(Member.class);

@@ -17,9 +17,10 @@ public class MemberEntityTest {
         // given
         String nickname = "nickname";
         String password = "password";
+        String memberEmail = "abc1234@naver.com";
 
         // when
-        Member member = new Member(nickname, password);
+        Member member = new Member(memberEmail, nickname, password);
 
         // then
         assertThat(member.getNickname()).isEqualTo(nickname);
