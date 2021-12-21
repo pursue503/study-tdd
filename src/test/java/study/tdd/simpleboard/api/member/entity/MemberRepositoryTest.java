@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,7 +15,7 @@ public class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
-    @Autowired
+    @PersistenceContext
     EntityManager entityManager;
 
     @Test
@@ -34,7 +35,7 @@ public class MemberRepositoryTest {
     }
 
     @Test
-    public void findMember() {
+    public void findMemberId() {
         // given
         String nickname = "Informix";
         String password = "q1w2e3";
