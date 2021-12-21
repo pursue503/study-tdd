@@ -1,4 +1,4 @@
-package study.tdd.simpleboard.api.board;
+package study.tdd.simpleboard.api.post;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,13 +9,15 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Board {
+public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long boardId;
+    private Long postId;
 
-    private String boardtitle;
+    private String posttitle;
+
+    private String postContent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
