@@ -43,17 +43,13 @@ public class PostAcceptanceTest {
                 .accept(MediaType.APPLICATION_JSON_VALUE)
 
                 // 실행
-                .when()
-                .get("/posts/1")
+        .when()
+                .get("/posts")
 
                 // 검증
-                .then()
+        .then()
                 .statusCode(HttpStatus.OK.value())
                 .assertThat();
-        //.body("id", equalTo(1));
-        //.body("title", equalTo("게시물 제목"))
-        //.body("content", equalTo("게시물 내용"))
-        //.body("createDate", equalTo(LocalDateTime.now()));
     }
 
     @Test
