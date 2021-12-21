@@ -20,6 +20,9 @@ public class Security extends WebSecurityConfigurerAdapter {
         http.headers()
                 .frameOptions()
                 .disable();
+
+        http.formLogin()
+                .disable();
     }
 
 
