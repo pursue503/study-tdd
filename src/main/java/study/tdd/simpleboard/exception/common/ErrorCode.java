@@ -1,4 +1,4 @@
-package study.tdd.simpleboard.api.post;
+package study.tdd.simpleboard.exception.common;
 
 import org.springframework.http.HttpStatus;
 

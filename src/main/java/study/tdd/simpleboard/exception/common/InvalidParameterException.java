@@ -1,21 +1,15 @@
-package study.tdd.simpleboard.api.post;
+package study.tdd.simpleboard.exception.common;
 
 import lombok.Getter;
-import org.springframework.validation.FieldError;
-
-import java.util.List;
-
-import static java.util.stream.Collectors.joining;
+import org.springframework.validation.Errors;
 
 @Getter
-public class InvalidParameterException extends BizException {
+public abstract class InvalidParameterException extends BizException {
 
-    private final String fieldErrorMsg;
+    private final Errors errors;
 
-    public InvalidParameterException(List<FieldError> fieldErrors) {
+    public InvalidParameterException(Errors errors) {
         super(GeneralParameterErrorCode.INVALID_PARAMETER);
-        this.fieldErrorMsg = fieldErrors.stream()
-                                        .map(FieldError::getDefaultMessage)
-                                        .collect(joining(""));
+        this.errors = errors;
     }
 }

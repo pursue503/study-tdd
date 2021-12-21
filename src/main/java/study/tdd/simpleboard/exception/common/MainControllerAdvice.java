@@ -1,7 +1,5 @@
-package com.dj.server.api.common.controller;
+package study.tdd.simpleboard.exception.common;
 
-import com.dj.server.api.common.response.ErrorResponseDTO;
-import com.dj.server.common.exception.common.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,17 +8,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.webjars.NotFoundException;
 
 import java.net.MalformedURLException;
 
-import static com.dj.server.api.common.controller.GeneralControllerAdvice.handleGeneralException;
+import static study.tdd.simpleboard.exception.common.GeneralControllerAdvice.handleGeneralException;
 
 /**
  * 전역 에러 핸들링
  *
  * @author informix
- * @created 2021-09-04
+ * @created 2021-12-21
  * @since 0.0.1
  */
 @Slf4j
@@ -40,10 +37,9 @@ public class MainControllerAdvice {
     }
 
     /**
-     * 잘못된 인수가 포함된 요청이 왔을 경우 처리합니다.
-     * 예시: StrangeProtocol://server.wearedj.club/...
-     * 예시2: "http://"가 없는 server.wearedj.club/
-     *
+     * 잘못된 인수로 요청이 왔을 경우 처리합니다.
+     * 예시: StrangeProtocol://www.homepage.com/...
+     * 예시: http://www.homepage.com?data={HackingAttack}
      * @return 400
      */
     @ExceptionHandler(IllegalArgumentException.class)
@@ -58,10 +54,6 @@ public class MainControllerAdvice {
 
     /**
      * 404 에러가 발생할 경우 기본 지정된 에러페이지로 리다이렉트시킵니다.
-     * <p>
-     * 반드시 아래의 설정을 yml 또는 properties에 해두어야 정상적으로 동작합니다.
-     * spring.mvc.throw-exception-if-no-handler-found: true
-     * spring.web.resources.add-mappings: false
      *
      * @return 404 뷰페이지
      */
@@ -69,12 +61,6 @@ public class MainControllerAdvice {
     protected ResponseEntity<ErrorResponseDTO> handle404(NoHandlerFoundException nhfe) {
         log.error("어떤 유저가 존재하지 않는 url로 자원을 요청했습니다.");
         return handleGeneralException(HttpStatus.NOT_FOUND, nhfe);
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    protected ResponseEntity<ErrorResponseDTO> handle404(NotFoundException nfe) {
-        log.error("어떤 유저가 존재하지 않는 url로 자원을 요청했습니다.");
-        return handleGeneralException(HttpStatus.NOT_FOUND, nfe);
     }
 
     /**

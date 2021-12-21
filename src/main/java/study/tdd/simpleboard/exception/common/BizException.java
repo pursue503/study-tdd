@@ -1,4 +1,4 @@
-package study.tdd.simpleboard.api.post;
+package study.tdd.simpleboard.exception.common;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

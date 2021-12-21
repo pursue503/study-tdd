@@ -1,11 +1,11 @@
-package study.tdd.simpleboard.api.post;
+package study.tdd.simpleboard.exception.common;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
 public enum GeneralParameterErrorCode implements ErrorCode {
-    INVALID_PARAMETER( HttpStatus.BAD_REQUEST, -999,"올바르지 않은 매개변수값이 전달되었습니다.");
+    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, -999, "매개변수가 충분히 전달되지 못했거나 올바르지 않은 매개변수 값이 전달되었습니다.");
 
     private final HttpStatus httpStatus;
     private final Integer bizCode;

@@ -1,4 +1,4 @@
-package study.tdd.simpleboard.api.post;
+package study.tdd.simpleboard.api.post.entity;
 
 import lombok.Builder;
 import lombok.Getter;
