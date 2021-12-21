@@ -40,7 +40,7 @@ public class GeneralControllerAdvice {
      * @param e          @Valid 또는 @Validated 검증을 하는 익셉션 목록
      * @return ResponseEntity<ErrorResponseDTO>
      */
-    public static ResponseEntity<ErrorResponseDTO> handleValidParamemterException(HttpStatus httpStatus, InvalidParameterException... e) {
+    public static ResponseEntity<ErrorResponseDTO> handleValidParameterException(HttpStatus httpStatus, InvalidParameterException... e) {
         ErrorResponseDTO response = ErrorResponseDTO.builder()
                 .errorCode(httpStatus.value())
                 .httpStatus(httpStatus)

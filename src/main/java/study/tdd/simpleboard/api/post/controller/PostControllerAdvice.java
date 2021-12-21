@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import study.tdd.simpleboard.exception.common.ErrorResponseDTO;
 import study.tdd.simpleboard.exception.post.InvalidPostParameterException;
 
-import static study.tdd.simpleboard.exception.common.GeneralControllerAdvice.handleValidParamemterException;
+import static study.tdd.simpleboard.exception.common.GeneralControllerAdvice.handleValidParameterException;
 
 @RestControllerAdvice
 public class PostControllerAdvice {
@@ -23,6 +23,6 @@ public class PostControllerAdvice {
      */
     @ExceptionHandler(InvalidPostParameterException.class)
     protected ResponseEntity<ErrorResponseDTO> handleInvalidMemberParameterException(InvalidPostParameterException e) {
-        return handleValidParamemterException(HttpStatus.BAD_REQUEST, e);
+        return handleValidParameterException(HttpStatus.BAD_REQUEST, e);
     }
 }
