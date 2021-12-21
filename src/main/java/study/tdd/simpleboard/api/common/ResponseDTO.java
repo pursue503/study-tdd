@@ -1,4 +1,4 @@
-package study.tdd.simpleboard.api.post;
+package study.tdd.simpleboard.api.common;
 
 import com.google.gson.Gson;
 import lombok.Getter;
