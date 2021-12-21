@@ -3,9 +3,7 @@ package study.tdd.simpleboard.api.post.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import study.tdd.simpleboard.api.common.ResponseDTO;
 import study.tdd.simpleboard.api.post.domain.PostSaveRequestDTO;
 import study.tdd.simpleboard.exception.post.InvalidPostParameterException;
@@ -23,4 +21,8 @@ public class PostController {
         return new ResponseDTO<>(null, "게시물이 잘 저장되었습니다.", HttpStatus.OK);
     }
 
+    @GetMapping("/posts/{id}")
+    public ResponseDTO<PostResponseDTO> findPost(@PathVariable Long id) {
+        return new ResponseDTO<>(new PostResponseDTO(), "게시물이 잘 조회되었습니다.", HttpStatus.OK);
+    }
 }
