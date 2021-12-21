@@ -4,6 +4,7 @@ public class MemberSignUpService {
 
     private final int VALID_NICK_NAME_LENGTH = 3;
 
+
     public boolean validateSignUpParam(String nickname, String password) {
         return nickname != null && password != null;
     }
