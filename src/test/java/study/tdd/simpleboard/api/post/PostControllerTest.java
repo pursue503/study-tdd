@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import study.tdd.simpleboard.api.post.controller.PostController;
+import study.tdd.simpleboard.api.post.controller.PostControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +39,7 @@ public class PostControllerTest {
     public void setUp() {
         mockmvc = MockMvcBuilders.standaloneSetup(new PostController())
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
+                .setControllerAdvice(new PostControllerAdvice())
                 .build();
     }
 
@@ -45,14 +47,10 @@ public class PostControllerTest {
     @DisplayName("게시물 제목 테스트")
     class PostTitleTest {
 
-        @ParameterizedTest
-        @NullSource
+        @Test
         @DisplayName("게시물 제목이 null로 전달되어 올 경우 400 에러 반환")
         void whenPostTitleisNull() throws Exception {
-            ResultActions perform = mockmvc.perform(post("/posts")
-                    //.param("postTitle", "제목")
-                    .param("postContent", "내용")
-            );
+            ResultActions perform = mockmvc.perform(post("/posts"));
 
             // 검증
             perform.andExpect(status().isBadRequest());
@@ -62,10 +60,15 @@ public class PostControllerTest {
         @DisplayName("게시물 제목이 비어 있는 상태로 올 경우 400 에러 반환")
         @ValueSource(strings = {" ", "     ", "\t", "\n"})
         void whenPostTitleisEmpty(String postTitleParam) throws Exception {
+            // 준비
+            Map<String, String> content = new HashMap<>();
+            content.put("postTitle", postTitleParam.trim());
+            content.put("postContent", "내용");
+
+            // 실행
             ResultActions perform = mockmvc.perform(post("/posts")
-                    .param("postTitle", postTitleParam.trim())
-                    .param("postContent", "내용")
-            );
+                    .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8")
+                    .content(mapper.writeValueAsString(content)));
 
             // 검증
             perform.andExpect(status().isBadRequest());
@@ -74,10 +77,11 @@ public class PostControllerTest {
         @Test
         @DisplayName("게시물 제목이 30글자를 초과하여 올 경우 400 에러 반환")
         void whenPostTitleExceeds30Letters() throws Exception {
+
             // 준비
             Map<String, String> content = new HashMap<>();
             content.put("postTitle", "30글자를 초과하여 작성된 게시물 제목입니다." +
-                                    "400 에러를 반환해야 합니다. 400 에러를 정상적으로 받았습니다. 감사합니다~.");
+                                     "400 에러를 반환해야 합니다. 400 에러를 정상적으로 받았습니다. 감사합니다~.");
             content.put("postContent", "내용");
 
             // 실행
