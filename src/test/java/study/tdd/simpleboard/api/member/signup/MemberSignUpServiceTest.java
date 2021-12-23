@@ -141,4 +141,17 @@ public class MemberSignUpServiceTest {
         }
     }
 
+    @Nested
+    @DisplayName("닉네임 중복 체크 테스트")
+    class CheckDuplicatedNicknameTest {
+
+        @ParameterizedTest
+        @ValueSource(strings = {"nickname123", "nicknames33"})
+        @DisplayName("닉네임이 중복되어있지 않으면 False 를 반환한다.")
+        public void duplicatedNickname(String nickname) {
+            assertThat(memberSignUpService.checkDuplicatedNickname(nickname)).isTrue();
+        }
+
+    }
+
 }

@@ -67,7 +67,7 @@ public class MemberRepositoryTest {
         Member wantToSaveMember = new Member(memberEmail, nickname, password);
 
         //when
-        Member saveMember = memberRepository.save(wantToSaveMember);
+        memberRepository.save(wantToSaveMember);
 
         // 영속성 컨텍스트 저장하고 비우기
         entityManager.flush();
