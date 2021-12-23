@@ -18,9 +18,8 @@ import static org.mockito.Mockito.mock;
 @DisplayName("회원 가입 테스트")
 public class MemberSignUpServiceTest {
 
-    Valid validationNickname = new ValidationNickname();
 
-    MemberSignUpService memberSignUpService = new MemberSignUpService(validationNickname);
+    MemberSignUpService memberSignUpService = new MemberSignUpService();
 
     @Test
     public void createMemberService() {

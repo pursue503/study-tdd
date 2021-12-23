@@ -1,16 +1,14 @@
 package study.tdd.simpleboard.api.member.signup;
 
 import study.tdd.simpleboard.api.member.signup.valid.Valid;
+import study.tdd.simpleboard.api.member.signup.valid.ValidationNickname;
+import study.tdd.simpleboard.api.member.signup.valid.ValidationPassword;
 
 public class MemberSignUpService {
 
-    private final int VALID_PASSWORD_LENGTH = 8;
 
-    private final Valid validationNickname;
-
-    public MemberSignUpService(Valid validationNickname) {
-        this.validationNickname = validationNickname;
-    }
+    private final Valid validationNickname = new ValidationNickname();
+    private final Valid validationPassword = new ValidationPassword();
 
     public boolean validateSignUpParam(String nickname, String password) {
         return nickname != null && password != null;
@@ -21,15 +19,9 @@ public class MemberSignUpService {
     }
 
     public boolean validatePassword(String password) {
-        return true;
+        return validationPassword.verify(password);
     }
 
-    private boolean validPasswordLength(String password) {
-        return password.length() >= VALID_PASSWORD_LENGTH;
-    }
 
-    private boolean validPasswordEnglish(String password) {
-        return true;
-    }
 
 }
