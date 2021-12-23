@@ -9,6 +9,14 @@ import org.springframework.http.ResponseEntity;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * 정형화된 에러 처리용 Utility Class. <br>
+ *
+ * @author Informix
+ * @create 2021-12-23
+ * @since 2.6.1 spring boot
+ * @since 0.0.1 dev
+ */
 @Slf4j
 public class GeneralControllerAdvice {
 

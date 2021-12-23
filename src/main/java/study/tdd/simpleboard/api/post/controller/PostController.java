@@ -11,6 +11,14 @@ import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 
 import javax.validation.Valid;
 
+/**
+ * 게시물과 관련된 작업 요청을 처리하는 컨트롤러
+ *
+ * @author Informix
+ * @create 2021-12-23
+ * @since 2.6.1 spring boot
+ * @since 0.0.1 dev
+ */
 @Slf4j
 @RestController
 public class PostController {

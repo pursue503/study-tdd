@@ -9,6 +9,14 @@ import study.tdd.simpleboard.exception.post.InvalidPostParameterException;
 
 import static study.tdd.simpleboard.exception.common.GeneralControllerAdvice.handleValidParameterException;
 
+/**
+ * 게시물과 관련된 작업 요청 중 발생하는 예외를 처리하는 컨트롤러 어드바이스
+ *
+ * @author Informix
+ * @create 2021-12-23
+ * @since 2.6.1 spring boot
+ * @since 0.0.1 dev
+ */
 @RestControllerAdvice
 public class PostControllerAdvice {
 

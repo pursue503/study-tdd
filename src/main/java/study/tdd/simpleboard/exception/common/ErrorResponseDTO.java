@@ -19,6 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * 클라이언트 측에 반환하는 에러 메시지를 제어하는 클래스.
+ *
+ * @author Informix
+ * @create 2021-12-23
+ * @since 2.6.1 spring boot
+ * @since 0.0.1 dev
+ */
 @Getter
 public class ErrorResponseDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
