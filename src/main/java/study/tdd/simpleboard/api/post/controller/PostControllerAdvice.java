@@ -23,7 +23,7 @@ public class PostControllerAdvice {
      */
     @ExceptionHandler(InvalidPostParameterException.class)
     protected ResponseEntity<ErrorResponseDTO> handleInvalidPostParameterException(InvalidPostParameterException e) {
-        return handleValidParameterException(HttpStatus.BAD_REQUEST, e.getErrorCode(), e);
+        return handleValidParameterException(e.getHttpStatus(), e.getErrorCode(), e);
     }
 
 }
