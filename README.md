@@ -64,10 +64,16 @@ code with me 를 활용하여 어렵거나 힘든 기능을
 ### ✏️게시판
 
 - 쓰기
+  - POST /posts PostController#posts(@Valid @RequestBody PostSaveRequestDTO)
 - 수정
+  - PATCH /posts PostController#updatePosts(@Valid @RequestBody PostUpdateRequestDTO)
 - 삭제
-- 조회(제목조회, 개별게시글조회)
-- 페이징
+  - DELETE /posts/{id}/{postId} PostController#deletePost(@Valid @RequestBody PostDeleteRequestDTO)
+- 조회(제목조회(페이징목록), 개별게시글조회)
+  - 개별게시글조회
+    - GET /posts/{id} PostController#posts/{id}(@PathVariable Long id)
+  - 제목조회(페이징목록)
+    - GET /posts/page={number} PostController#posts(@PathVariable Long page)
 
 ### ✏️댓글
 - 쓰기
@@ -122,13 +128,13 @@ code with me 를 활용하여 어렵거나 힘든 기능을
     - 관리자에 의해서만 강등된 역할(Role)
 
 ### ✏️게시판
-- [ ] 게시물 제목은 1글자 이상 30글자 이하 허용
-  - [ ] 30글자가 넘어가는 경우 "게시글 제목 길이가 초과되었습니다."(400 Bad Request, *-1) 메세지를 보내주기
-- [ ] 게시물 내용은 1글자 이상 2000글자 이상 허용
-  - [ ] 게시판 내용이 비어있으면 "게시판 내용은 비어있을 수 없습니다."(400 Bad Request, *-2) 메시지를 보내주기
+- [x] 게시물 제목은 1글자 이상 30글자 이하 허용
+  - [x] 30글자가 넘어가는 경우 "게시글 제목 길이가 초과되었습니다."(400 Bad Request, *-1) 메세지를 보내주기
+- [x] 게시물 내용은 1글자 이상 2000글자 이상 허용
+  - [x] 게시판 내용이 비어있으면 "게시판 내용은 비어있을 수 없습니다."(400 Bad Request, *-2) 메시지를 보내주기
   - [ ] 게시물 내용으로 작성될 수 있는 컨텐츠 타입은 이미지, 텍스트를 지원
   - [ ] *(특정 주기)마다 자동 임시 저장
-- [ ] 게시판 순서는 시간순서로 최근 작성된 거로 보여주기
+- [ ] 게시판의 게시물 조회 순서는 시간 순서로 최근 작성된 것을 먼저 보여주기
   - [ ] Block 처리된 게시물 제외
 - [ ] 게시물 본문 태그 함께 저장하기
 - [ ] 본인이 작성한 게시글인지 서버에서 검증로직 추가하기
