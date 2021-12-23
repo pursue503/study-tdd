@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,7 +59,8 @@ public class PostControllerTest {
             ResultActions perform = mockmvc.perform(post("/posts"));
 
             // 검증
-            perform.andExpect(status().isBadRequest());
+            perform.andDo(print())
+                    .andExpect(status().isBadRequest());
         }
 
         @ParameterizedTest
@@ -120,25 +122,7 @@ public class PostControllerTest {
     class PostContentTest {
 
         @ParameterizedTest
-        @EmptySource
-        @DisplayName("게시물 내용이 비어 있는 경우 400 에러 반환")
-        void whenPostContentisEmpty(String emptyContent) throws Exception {
-            // 준비
-            Map<String, String> content = new HashMap<>();
-            content.put("postTitle", "제목");
-            content.put("postContent", emptyContent);
-
-            // 실행
-            ResultActions perform = mockmvc.perform(post("/posts")
-                    .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8")
-                    .content(mapper.writeValueAsString(content)));
-
-            // 검증
-            perform.andExpect(status().isBadRequest());
-        }
-
-        @ParameterizedTest
-        @ValueSource(strings = {"    ", " ", "\n", "\t"})
+        @ValueSource(strings = {"", "    ", " ", "\n", "\t"})
         @DisplayName("게시물 내용이 공백 또는 내용이 비어있는 상태로 전달되었을 경우 400 에러 반환")
         void whenPostContentisEmpty2(String emptyContent) throws Exception {
             // 준비
@@ -152,7 +136,8 @@ public class PostControllerTest {
                     .content(mapper.writeValueAsString(content)));
 
             // 검증
-            perform.andExpect(status().isBadRequest());
+            perform.andDo(print())
+                    .andExpect(status().isBadRequest());
         }
 
         @Test
@@ -171,7 +156,7 @@ public class PostControllerTest {
         }
 
         @Test
-        @DisplayName("게시물 내용이 1글자 이상 2000 글자 이하일 경우")
+        @DisplayName("게시물 내용이 1글자 이상 2000 글자 이하일 경우 통과")
         void isPostContentBetween1and2000Letters() throws Exception {
             Map<String, String> content = new HashMap<>();
             content.put("postTitle", "제목");
