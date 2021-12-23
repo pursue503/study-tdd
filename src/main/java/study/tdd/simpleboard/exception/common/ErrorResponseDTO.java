@@ -32,7 +32,7 @@ public class ErrorResponseDTO {
     private final Integer errorCode;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("status")
-    private HttpStatus httpStatus;
+    private final HttpStatus httpStatus;
     /**
      * errors(BindingResult result)와 같은 방식을 통해 customFieldErrors에 값을 설정하면
      * errors라는 json key값이 에러처리 응답메시지에 포함되어 전달됩니다. 설정하지 않으면 errors json key값은 클라이언트에 전달되지 않습니다.
@@ -79,19 +79,21 @@ public class ErrorResponseDTO {
 
         /**
          * errors 메서드는 (@Valid 또는 @Validated)와 BindingResult 를 사용할 때만 사용해야 합니다.
+         * errorCode를 설정하면 미리 협의된 에러코드를 함꼐 클라이언트에 전달할 수 있습니다.
+         * (오버로딩 메서드를 중복으로 사용할 경우) 가장 마지막에 호출된 설정 정보로 적용됩니다.
          *
          * @param errors BindingResult.getFieldErrors() 메소드를 통해 전달받은 fieldErrors
          * @return 빌더 메서드 체이닝 ErrorResponseDTO
          */
-        public ErrorResponseDTO.ErrorResponseDTOBuilder errors(Errors errors) {
-            setCustomFieldErrors(errors.getFieldErrors());
+        public ErrorResponseDTO.ErrorResponseDTOBuilder errors(Errors errors, ErrorCode errorCode) {
+            setCustomFieldErrors(errors.getFieldErrors(), errorCode);
             return this;
         }
 
         /**
-         * BindingResult.getFieldErrors() 메소드를 통해 전달받은 fieldErrors
+         * BindingResult.getFieldErrors() 메소드를 통해 전달받은 fieldErrors 및 Enumerate errorCode
          */
-        private void setCustomFieldErrors(List<FieldError> fieldErrors) {
+        private void setCustomFieldErrors(List<FieldError> fieldErrors, ErrorCode errorCode) {
 
             customFieldErrors = new ArrayList<>();
 
@@ -99,7 +101,9 @@ public class ErrorResponseDTO {
                 customFieldErrors.add(new CustomFieldError(
                         Objects.requireNonNull(fieldError.getCodes())[0].split("\\.")[2],
                         fieldError.getRejectedValue(),
-                        fieldError.getDefaultMessage()));
+                        fieldError.getDefaultMessage(),
+                        errorCode.findMatchBizCode(fieldError.getDefaultMessage()))
+                );
             }
         }
 
@@ -127,6 +131,7 @@ public class ErrorResponseDTO {
         private final String rejectedParameter;
         private final Object rejectedValue;
         private final String reason;
+        private final Integer internalCode;
     }
 
     @Override

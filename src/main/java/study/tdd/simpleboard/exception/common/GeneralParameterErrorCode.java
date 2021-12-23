@@ -2,6 +2,7 @@ package study.tdd.simpleboard.exception.common;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import java.util.Arrays;
 
 @Getter
 public enum GeneralParameterErrorCode implements ErrorCode {
@@ -17,4 +18,11 @@ public enum GeneralParameterErrorCode implements ErrorCode {
         this.msg = msg;
     }
 
+    public Integer findMatchBizCode(String failMessage) {
+        return Arrays.stream(GeneralParameterErrorCode.values())
+                .filter(errorCode -> (errorCode.msg).equals(failMessage))
+                .map(GeneralParameterErrorCode::getBizCode)
+                .findAny()
+                .orElse(-999);
+    }
 }

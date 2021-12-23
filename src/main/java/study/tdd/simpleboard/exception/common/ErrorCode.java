@@ -6,4 +6,5 @@ public interface ErrorCode {
     String getMsg();
     Integer getBizCode();
     HttpStatus getHttpStatus();
+    Integer findMatchBizCode(String failMessage);
 }
