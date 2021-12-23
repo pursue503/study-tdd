@@ -97,7 +97,7 @@ code with me 를 활용하여 어렵거나 힘든 기능을
   - [x] 대문자 하나이상 포함
   - [x] 특수문자 하나이상 포함
   - [x] 숫자 하나이상 포함
-- [ ] 닉네임 중복 체크 #checkDuplicatedNickname(String nickname)
+- [x] 닉네임 중복 체크 #checkDuplicatedNickname(String nickname)
 - [ ] 로그인 검사 - JWT (인터셉터)
   - [ ] 토큰 디코딩(복호화) JwtUtil#decode(String token)
   - [ ] 토큰 검증 JwtUtil#validateAccessToken(String token),
