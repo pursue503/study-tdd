@@ -97,7 +97,7 @@ public class ErrorResponseDTO {
 
             for (FieldError fieldError : fieldErrors) {
                 customFieldErrors.add(new CustomFieldError(
-                        Objects.requireNonNull(fieldError.getCodes())[0],
+                        Objects.requireNonNull(fieldError.getCodes())[0].split("\\.")[2],
                         fieldError.getRejectedValue(),
                         fieldError.getDefaultMessage()));
             }
@@ -108,7 +108,7 @@ public class ErrorResponseDTO {
          *
          * @return now (timestamp) false
          */
-        public ErrorResponseDTO.ErrorResponseDTOBuilder offDisplayNow() {
+        public ErrorResponseDTO.ErrorResponseDTOBuilder offDisplayTimeStamp() {
             this.displayNow = false;
             return this;
         }
@@ -124,8 +124,8 @@ public class ErrorResponseDTO {
     @Getter
     @RequiredArgsConstructor
     public static class CustomFieldError {
-        private final String field;
-        private final Object value;
+        private final String rejectedParameter;
+        private final Object rejectedValue;
         private final String reason;
     }
 

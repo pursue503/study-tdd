@@ -21,8 +21,15 @@ public class PostController {
         return new ResponseDTO<>(null, "게시물이 잘 저장되었습니다.", HttpStatus.OK);
     }
 
-    @GetMapping("/posts/{id}")
-    public ResponseDTO<PostResponseDTO> findPost(@PathVariable Long id) {
+    @GetMapping("/posts/{postId}")
+    public ResponseDTO<PostResponseDTO> findOnePost(@PathVariable Long postId) {
         return new ResponseDTO<>(new PostResponseDTO(), "게시물이 잘 조회되었습니다.", HttpStatus.OK);
     }
+
+    /* TODO: TEST 코드를 먼저 작성한 뒤에 재활성화
+    @GetMapping("/posts")
+    public ResponseDTO<PostResponseDTO> findPagingPostList(@RequestParam Long page) {
+        return new ResponseDTO<>(new PostResponseDTO(), "게시물이 잘 조회되었습니다.", HttpStatus.OK);
+    }
+     */
 }
