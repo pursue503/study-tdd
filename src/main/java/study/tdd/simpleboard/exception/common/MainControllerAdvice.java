@@ -18,7 +18,8 @@ import static study.tdd.simpleboard.exception.common.GeneralControllerAdvice.han
  *
  * @author informix
  * @created 2021-12-21
- * @since 0.0.1
+ * @since 2.6.1 spring boot
+ * @since 0.0.1 dev
  */
 @Slf4j
 @RestControllerAdvice
