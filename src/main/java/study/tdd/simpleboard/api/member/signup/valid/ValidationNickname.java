@@ -28,7 +28,7 @@ public class ValidationNickname implements Valid {
 
     private boolean validNickNameNumber(String nickname) {
         return nickname.chars()
-                .filter(c -> c >= '0' && c<= '9')
+                .filter(c -> c >= '0' && c <= '9')
                 .count() != 0;
     }
 

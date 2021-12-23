@@ -3,19 +3,18 @@ package study.tdd.simpleboard.api.member.signup;
 import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.member.entity.MemberRepository;
 import study.tdd.simpleboard.api.member.signup.valid.Valid;
-import study.tdd.simpleboard.api.member.signup.valid.ValidationNickname;
-import study.tdd.simpleboard.api.member.signup.valid.ValidationPassword;
 
 public class MemberSignUpService {
 
-
-    private final Valid validationNickname = new ValidationNickname();
-    private final Valid validationPassword = new ValidationPassword();
+    private final Valid validationNickname;
+    private final Valid validationPassword;
     private final MemberRepository memberRepository;
 
     // Constructor
-    public MemberSignUpService(MemberRepository memberRepository) {
+    public MemberSignUpService(MemberRepository memberRepository, Valid validationNickname, Valid validationPassword) {
         this.memberRepository = memberRepository;
+        this.validationNickname = validationNickname;
+        this.validationPassword = validationPassword;
     }
 
     // Method
@@ -44,7 +43,6 @@ public class MemberSignUpService {
     }
 
 
-
     public boolean validateNickname(String nickname) {
         return validationNickname.verify(nickname);
     }
@@ -56,7 +54,6 @@ public class MemberSignUpService {
     public boolean checkDuplicatedNickname(String nickname) {
         return memberRepository.existsByNickname(nickname);
     }
-
 
 
 }
