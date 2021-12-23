@@ -57,4 +57,25 @@ public class MemberRepositoryTest {
         assertThat(findMember.getPassword()).isEqualTo(password);
     }
 
+    @Test
+    public void existsByNickname() {
+
+        // given
+        String nickname = "Informix";
+        String password = "q1w2e3";
+        String memberEmail = "abc1234@naver.com";
+        Member wantToSaveMember = new Member(memberEmail, nickname, password);
+
+        //when
+        Member saveMember = memberRepository.save(wantToSaveMember);
+
+        // 영속성 컨텍스트 저장하고 비우기
+        entityManager.flush();
+        entityManager.clear();
+
+        boolean checkNickname = memberRepository.existsByNickname(nickname);
+
+        assertThat(checkNickname).isTrue();
+    }
+
 }

@@ -92,11 +92,11 @@ code with me 를 활용하여 어렵거나 힘든 기능을
   - [x] 최소 3자 이상
   - [x] 알파벳 대소문자(a~z, A~Z)
   - [x] 숫자(0~9)로 구성하기
-- [ ] 비밀번호 규칙검증: #validatePassword(String password)
-  - [ ] 최소 8자 이상
-  - [ ] 대문자 하나이상 포함
-  - [ ] 특수문자 하나이상 포함
-  - [ ] 숫자 하나이상 포함
+- [x] 비밀번호 규칙검증: #validatePassword(String password)
+  - [x] 최소 8자 이상
+  - [x] 대문자 하나이상 포함
+  - [x] 특수문자 하나이상 포함
+  - [x] 숫자 하나이상 포함
 - [ ] 닉네임 중복 체크 #checkDuplicatedNickname(String nickname)
 - [ ] 로그인 검사 - JWT (인터셉터)
   - [ ] 토큰 디코딩(복호화) JwtUtil#decode(String token)

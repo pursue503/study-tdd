@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
+    boolean existsByNickname(String nickname);
+
 }

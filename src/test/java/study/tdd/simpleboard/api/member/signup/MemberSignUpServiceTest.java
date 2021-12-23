@@ -102,6 +102,7 @@ public class MemberSignUpServiceTest {
     }
 
     @Nested
+    @DisplayName("비밀번호 검증 테스트")
     class ValidPasswordTest {
 
         @ParameterizedTest
