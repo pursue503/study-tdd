@@ -1,46 +1,27 @@
 package study.tdd.simpleboard.api.member.signup;
 
+import study.tdd.simpleboard.api.member.signup.valid.Valid;
+
 public class MemberSignUpService {
 
-    private final int VALID_NICK_NAME_LENGTH = 3;
     private final int VALID_PASSWORD_LENGTH = 8;
 
+    private final Valid validationNickname;
+
+    public MemberSignUpService(Valid validationNickname) {
+        this.validationNickname = validationNickname;
+    }
 
     public boolean validateSignUpParam(String nickname, String password) {
         return nickname != null && password != null;
     }
 
     public boolean validateNickname(String nickname) {
-        if (!validNickNameEnglish(nickname)) {
-            return false;
-        }
-        if (!validNickNameNumber(nickname)) {
-            return false;
-        }
-        if (!validNickNameLength(nickname)) {
-            return false;
-        }
-        return true;
+        return validationNickname.verify(nickname);
     }
 
     public boolean validatePassword(String password) {
-
-    }
-
-    private boolean validNickNameLength(String nickname) {
-        return nickname.length() >= VALID_NICK_NAME_LENGTH;
-    }
-
-    private boolean validNickNameEnglish(String nickname) {
-        return nickname.chars()
-                    .filter(c -> (c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-                .count() != 0;
-    }
-
-    private boolean validNickNameNumber(String nickname) {
-        return nickname.chars()
-                .filter(c -> c >= 48 && c<= 57)
-                .count() != 0;
+        return true;
     }
 
     private boolean validPasswordLength(String password) {
@@ -48,8 +29,7 @@ public class MemberSignUpService {
     }
 
     private boolean validPasswordEnglish(String password) {
-        return password
-                .chars()
+        return true;
     }
 
 }
