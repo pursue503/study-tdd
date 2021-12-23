@@ -22,7 +22,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}")
-    public ResponseDTO<PostResponseDTO> findPost(@PathVariable Long id) {
+    public ResponseDTO<PostResponseDTO> findOnePost(@PathVariable Long id) {
         return new ResponseDTO<>(new PostResponseDTO(), "게시물이 잘 조회되었습니다.", HttpStatus.OK);
     }
 }
