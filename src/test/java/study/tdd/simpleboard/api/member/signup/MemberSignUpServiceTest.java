@@ -11,6 +11,7 @@ import study.tdd.simpleboard.api.member.signup.dto.MemberSignUpRequestDTO;
 import study.tdd.simpleboard.api.member.signup.valid.ValidationNickname;
 import study.tdd.simpleboard.api.member.signup.valid.ValidationPassword;
 import study.tdd.simpleboard.exception.common.BizException;
+import study.tdd.simpleboard.exception.member.signup.MemberSignUpErrorCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -51,7 +52,8 @@ public class MemberSignUpServiceTest {
 
         // when then
         assertThatThrownBy(() -> memberSignUpService.saveMember(memberSignUpRequestDTO))
-                .isInstanceOf(BizException.class);
+                .isInstanceOf(BizException.class)
+                .hasMessage(MemberSignUpErrorCode.SIGN_UP_NICKNAME_NOT_VALID.getMsg());
     }
 
     @ParameterizedTest
@@ -64,8 +66,8 @@ public class MemberSignUpServiceTest {
         given(memberRepository.existsByNickname(memberSignUpRequestDTO.getNickname())).willReturn(true);
 
         assertThatThrownBy(() -> memberSignUpService.saveMember(memberSignUpRequestDTO))
-                .isInstanceOf(BizException.class);
-//                .hasMessageContaining("실패 메시지");
+                .isInstanceOf(BizException.class)
+                .hasMessage(MemberSignUpErrorCode.SIGN_UP_NICKNAME_DUPLICATED.getMsg());
     }
 
     @ParameterizedTest
@@ -77,12 +79,9 @@ public class MemberSignUpServiceTest {
 
         // when then
         assertThatThrownBy(() -> memberSignUpService.saveMember(memberSignUpRequestDTO))
-                .isInstanceOf(BizException.class);
+                .isInstanceOf(BizException.class)
+                .hasMessage(MemberSignUpErrorCode.SIGN_UP_PASSWORD_NOT_VALID.getMsg());
     }
-
-
-
-
 
     @ParameterizedTest
     @ValueSource(strings = {"nickname123", "nicknames33"})
