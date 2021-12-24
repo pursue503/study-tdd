@@ -9,6 +9,14 @@ import org.springframework.http.ResponseEntity;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * 정형화된 에러 처리용 Utility Class. <br>
+ *
+ * @author Informix
+ * @create 2021-12-23
+ * @since 2.6.1 spring boot
+ * @since 0.0.1 dev
+ */
 @Slf4j
 public class GeneralControllerAdvice {
 
@@ -40,7 +48,7 @@ public class GeneralControllerAdvice {
      * @param e          @Valid 또는 @Validated 검증을 하는 익셉션 목록
      * @return ResponseEntity<ErrorResponseDTO>
      */
-    public static ResponseEntity<ErrorResponseDTO> handleValidParameterException(HttpStatus httpStatus, InvalidParameterException... e) {
+    public static ResponseEntity<ErrorResponseDTO> handleValidParameterException(HttpStatus httpStatus, ErrorCode errorCode, InvalidParameterException... e) {
         ErrorResponseDTO response = ErrorResponseDTO.builder()
                 .errorCode(httpStatus.value())
                 .httpStatus(httpStatus)
@@ -52,7 +60,7 @@ public class GeneralControllerAdvice {
                         .filter(Objects::nonNull)
                         .findFirst()
                         .orElseThrow(() -> new BizException(GeneralParameterErrorCode.INVALID_PARAMETER))
-                        .getErrors())
+                        .getErrors(), errorCode)
                 .build();
         log.error(response.getMessage());
         return new ResponseEntity<>(response, getHttpHeader(), httpStatus);

@@ -7,16 +7,25 @@ import org.springframework.web.bind.annotation.*;
 import study.tdd.simpleboard.api.common.ResponseDTO;
 import study.tdd.simpleboard.api.post.domain.PostSaveRequestDTO;
 import study.tdd.simpleboard.exception.post.InvalidPostParameterException;
+import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 
 import javax.validation.Valid;
 
+/**
+ * 게시물과 관련된 작업 요청을 처리하는 컨트롤러
+ *
+ * @author Informix
+ * @create 2021-12-23
+ * @since 2.6.1 spring boot
+ * @since 0.0.1 dev
+ */
 @Slf4j
 @RestController
 public class PostController {
 
     @PostMapping("/posts")
     public ResponseDTO<PostSaveRequestDTO> savePost(@Valid @RequestBody PostSaveRequestDTO dto, BindingResult result) {
-        if (result.hasErrors()) throw new InvalidPostParameterException(result);
+        if (result.hasErrors()) throw new InvalidPostParameterException(result, PostCrudErrorCode.POST_CRUD_FAIL);
         // TODO: postService.save(dto)
         return new ResponseDTO<>(null, "게시물이 잘 저장되었습니다.", HttpStatus.OK);
     }
@@ -31,5 +40,5 @@ public class PostController {
     public ResponseDTO<PostResponseDTO> findPagingPostList(@RequestParam Long page) {
         return new ResponseDTO<>(new PostResponseDTO(), "게시물이 잘 조회되었습니다.", HttpStatus.OK);
     }
-     */
+    */
 }

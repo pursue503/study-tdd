@@ -7,6 +7,14 @@ import study.tdd.simpleboard.api.member.entity.Member;
 
 import javax.persistence.*;
 
+/**
+ * 게시물 엔티티
+ *
+ * @author Informix
+ * @create 2021-12-23
+ * @since 2.6.1 spring boot
+ * @since 0.0.1 dev
+ */
 @Getter
 @NoArgsConstructor
 @Entity

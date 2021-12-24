@@ -1,22 +1,14 @@
 package study.tdd.simpleboard.api.post;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EmptySource;
-import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -88,7 +80,7 @@ public class PostControllerTest {
             // 준비
             Map<String, String> content = new HashMap<>();
             content.put("postTitle", "30글자를 초과하여 작성된 게시물 제목입니다." +
-                                     "400 에러를 반환해야 합니다. 400 에러를 정상적으로 받았습니다. 감사합니다~.");
+                    "400 에러를 반환해야 합니다. 400 에러를 정상적으로 받았습니다. 감사합니다~.");
             content.put("postContent", "내용");
 
             // 실행
