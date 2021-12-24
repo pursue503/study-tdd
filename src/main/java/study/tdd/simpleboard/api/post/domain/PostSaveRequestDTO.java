@@ -2,6 +2,7 @@ package study.tdd.simpleboard.api.post.domain;
 
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
+import study.tdd.simpleboard.api.post.entity.Post;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -29,9 +30,21 @@ public class PostSaveRequestDTO {
     @Length(max = 2000, message = "게시물 내용은 2000 글자를 초과할 수 없습니다.")
     private final String postContent;
 
-    @ConstructorProperties({"postTitle", "postContent"})
-    public PostSaveRequestDTO(String postTitle, String postContent) {
+    private final String image;
+
+    @ConstructorProperties({"postTitle", "postContent", "image"})
+    public PostSaveRequestDTO(String postTitle, String postContent, String image) {
         this.postTitle = postTitle == null ? null : postTitle.trim();
         this.postContent = postContent == null ? null : postContent.trim();
+        this.image = image;
+    }
+
+    public Post toEntity() {
+        return Post.builder()
+                .postTitle(getPostTitle())
+                .postContent(getPostContent())
+                .image(getImage())
+                .build();
+
     }
 }
