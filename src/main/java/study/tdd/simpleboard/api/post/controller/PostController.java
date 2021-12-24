@@ -32,12 +32,14 @@ public class PostController {
 
     @GetMapping("/posts/{postId}")
     public ResponseDTO<PostResponseDTO> findOnePost(@PathVariable Long postId) {
+        // TODO: postService.findOnePost(postId)
         return new ResponseDTO<>(new PostResponseDTO(), "게시물이 잘 조회되었습니다.", HttpStatus.OK);
     }
 
     /* TODO: TEST 코드를 먼저 작성한 뒤에 재활성화
     @GetMapping("/posts")
-    public ResponseDTO<PostResponseDTO> findPagingPostList(@RequestParam Long page) {
+    public ResponseDTO<PostResponseDTO> pagingPost(@RequestParam Long page) {
+        // TODO: postService.findPostList(page)
         return new ResponseDTO<>(new PostResponseDTO(), "게시물이 잘 조회되었습니다.", HttpStatus.OK);
     }
     */
