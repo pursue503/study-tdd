@@ -3,6 +3,7 @@ package study.tdd.simpleboard.api.post.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import study.tdd.simpleboard.api.member.entity.Member;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
+@ToString
 public class Post {
 
     @Id
@@ -28,15 +30,22 @@ public class Post {
 
     private String postContent;
 
+    private String image;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
+    @ToString.Exclude
     private Member member;
 
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
     @Builder
-    public Post(Long postId, String postTitle, String postContent, Member member) {
-        this.postId = postId;
+    public Post(String postTitle, String postContent, String image, Member member) {
         this.postTitle = postTitle;
         this.postContent = postContent;
+        this.image = image;
         this.member = member;
     }
 }
