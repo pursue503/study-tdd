@@ -17,8 +17,9 @@ import static study.tdd.simpleboard.exception.common.GeneralControllerAdvice.han
  * 전역 에러 핸들링
  *
  * @author informix
- * @created 2021-12-21
- * @since 0.0.1
+ * @create 2021-12-21
+ * @since 2.6.1 spring boot
+ * @since 0.0.1 dev
  */
 @Slf4j
 @RestControllerAdvice
