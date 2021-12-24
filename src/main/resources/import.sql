@@ -37,4 +37,4 @@ insert into POST (post_title, member_id) values ('20번 게시물 제목입니�
 insert into POST (post_title, member_id) values ('21번 게시물 제목입니다.', 12);
 insert into POST (post_title, member_id) values ('22번 게시물 제목입니다.', 12);
 insert into POST (post_title, member_id) values ('23번 게시물 제목입니다.', 12);
-insert into POST (post_title, member_id) values ('24번 게시물 제목입니다.', 12);
+insert into POST (post_title, member_id) values ('24번 게시물 제목입니다.', 13);
