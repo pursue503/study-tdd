@@ -8,11 +8,12 @@ import org.junit.jupiter.params.provider.ValueSource;
 import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.member.entity.MemberRepository;
 import study.tdd.simpleboard.api.member.signup.dto.MemberSignUpRequestDTO;
-import study.tdd.simpleboard.api.member.signup.dto.MemberSignUpRequestDTOTest;
 import study.tdd.simpleboard.api.member.signup.valid.ValidationNickname;
 import study.tdd.simpleboard.api.member.signup.valid.ValidationPassword;
+import study.tdd.simpleboard.exception.common.BizException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -32,8 +33,56 @@ public class MemberSignUpServiceTest {
     @CsvSource(value = {"nickname1234:abcd1234!A:pursue503@naver.com"}, delimiterString = ":")
     @DisplayName("모든 조건을 통과시키고 회원가입을 성공한다.")
     public void saveMember(String nickname, String password, String memberEmail) {
-        assertThat(memberSignUpService.saveMember(toMemberSignUpRequestDTO(nickname, password, memberEmail))).isInstanceOf(Member.class);
+
+        // given
+        MemberSignUpRequestDTO memberSignUpRequestDTO = toMemberSignUpRequestDTO(nickname, password, memberEmail);
+
+        // when then
+        assertThat(memberSignUpService.saveMember(memberSignUpRequestDTO)).isInstanceOf(Member.class);
     }
+
+    @ParameterizedTest
+    @CsvSource(value = {"ni:abcd1234!A:pursue503@naver.com"}, delimiterString = ":")
+    @DisplayName("회원가입 조건에서 닉네임 조건이 안맞을 경우 BizException 을 발생시킨다.")
+    public void BizExceptionWhenNotValidNickname(String nickname, String password, String memberEmail) {
+
+        // given
+        MemberSignUpRequestDTO memberSignUpRequestDTO = toMemberSignUpRequestDTO(nickname, password, memberEmail);
+
+        // when then
+        assertThatThrownBy(() -> memberSignUpService.saveMember(memberSignUpRequestDTO))
+                .isInstanceOf(BizException.class);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"nickname1234:abcd1234!A:pursue503@naver.com"}, delimiterString = ":")
+    @DisplayName("회원가입시 회원의 아이디가 중복되어있으면 BizException 을 발생시킨다.")
+    public void BizExceptionWhenDuplicatedNickname(String nickname, String password, String memberEmail) {
+
+        MemberSignUpRequestDTO memberSignUpRequestDTO = toMemberSignUpRequestDTO(nickname, password, memberEmail);
+
+        given(memberRepository.existsByNickname(memberSignUpRequestDTO.getNickname())).willReturn(true);
+
+        assertThatThrownBy(() -> memberSignUpService.saveMember(memberSignUpRequestDTO))
+                .isInstanceOf(BizException.class);
+//                .hasMessageContaining("실패 메시지");
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"nickname1234:abcd12:pursue503@naver.com"}, delimiterString = ":")
+    @DisplayName("회원가입시 회원의 비밀번호가 조건을 만족하지 못하면 BizException 을 발생시킨다.")
+    public void BizExceptionWhenNotValidPassword(String nickname, String password, String memberEmail) {
+        // given
+        MemberSignUpRequestDTO memberSignUpRequestDTO = toMemberSignUpRequestDTO(nickname, password, memberEmail);
+
+        // when then
+        assertThatThrownBy(() -> memberSignUpService.saveMember(memberSignUpRequestDTO))
+                .isInstanceOf(BizException.class);
+    }
+
+
+
+
 
     @ParameterizedTest
     @ValueSource(strings = {"nickname123", "nicknames33"})
