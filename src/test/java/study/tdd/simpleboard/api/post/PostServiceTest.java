@@ -6,10 +6,12 @@ import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.post.entity.Post;
 import study.tdd.simpleboard.api.post.repository.PostRepository;
 import study.tdd.simpleboard.api.post.service.PostService;
+import study.tdd.simpleboard.exception.common.BizException;
+import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -46,7 +48,6 @@ public class PostServiceTest {
     @Test
     @DisplayName("게시물 1개 조회 성공")
     void findOnePostSuccess() {
-
         // 준비
         Optional<Post> expectedToGetPost = Optional.of(Post.builder()
                 .postTitle("제목")
@@ -68,20 +69,17 @@ public class PostServiceTest {
     @DisplayName("게시물 1개 조회 실패")
     void findOnePostFailure() {
         // 준비
-        Optional<Post> expectedToGetPost = Optional.of(Post.builder()
-                .postTitle("제목")
-                .postContent("내용")
-                .member(member)
-                .build());
+        Throwable throwable = catchThrowable(() -> {
+            throw new BizException(PostCrudErrorCode.POST_NOT_FOUND);
+        });
 
-        given(postRepository.findById(1L)).willReturn(expectedToGetPost);
+        given(postRepository.findById(-1L)).willThrow(throwable);
 
         // 실행
-        Post onePost = postService.findOnePost(1L);
-
         // 검증
-        verify(postRepository, times(1)).findById(1L);
-        assertThat(expectedToGetPost.get()).isEqualTo(onePost);
+        assertThatThrownBy(() -> postService.findOnePost(-1L))
+                .isInstanceOf(BizException.class)
+                .hasMessageContaining("해당 게시물을 찾을 수 없습니다.");
     }
 
     @Test
@@ -101,7 +99,6 @@ public class PostServiceTest {
     void updateOnePostSuccess() {
 
     }
-
 
     @Test
     @DisplayName("게시물 1개 수정 실패")
