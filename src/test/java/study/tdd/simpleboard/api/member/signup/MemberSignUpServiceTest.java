@@ -7,6 +7,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.member.entity.MemberRepository;
+import study.tdd.simpleboard.api.member.signup.dto.MemberSignUpRequestDTO;
+import study.tdd.simpleboard.api.member.signup.dto.MemberSignUpRequestDTOTest;
 import study.tdd.simpleboard.api.member.signup.valid.ValidationNickname;
 import study.tdd.simpleboard.api.member.signup.valid.ValidationPassword;
 
@@ -30,21 +32,7 @@ public class MemberSignUpServiceTest {
     @CsvSource(value = {"nickname1234:abcd1234!A:pursue503@naver.com"}, delimiterString = ":")
     @DisplayName("모든 조건을 통과시키고 회원가입을 성공한다.")
     public void saveMember(String nickname, String password, String memberEmail) {
-        assertThat(memberSignUpService.saveMember(nickname, password, memberEmail)).isInstanceOf(Member.class);
-    }
-
-    @ParameterizedTest
-    @CsvSource(value = {"nickname:password:pursue503@naver.com", "Informix:q1w2e3:pursue503@naver.com", "JaeHyun:qwerty123:pursue503@naver.com"}, delimiterString = ":")
-    @DisplayName("모든 파라매터가 null 이 아닐 때 True 반환을 확인한다.")
-    public void validateSignUpParam(String nickname, String password, String memberEmail) {
-        assertThat(memberSignUpService.validateSignUpParam(nickname, password, memberEmail)).isTrue();
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = {"nickname", "Informix", "JaeHyun"})
-    @DisplayName("파라매터가 1개 이상 비어 있을 때 False 를 반환하는 것을 확인한다.")
-    public void whenOneParameterIsNull(String nickname) {
-        assertThat(memberSignUpService.validateSignUpParam(nickname, null, null)).isFalse();
+        assertThat(memberSignUpService.saveMember(toMemberSignUpRequestDTO(nickname, password, memberEmail))).isInstanceOf(Member.class);
     }
 
     @ParameterizedTest
@@ -53,6 +41,10 @@ public class MemberSignUpServiceTest {
     public void duplicatedNickname(String nickname) {
         given(memberRepository.existsByNickname(nickname)).willReturn(true);
         assertThat(memberSignUpService.checkDuplicatedNickname(nickname)).isTrue();
+    }
+
+    private MemberSignUpRequestDTO toMemberSignUpRequestDTO(String nickname, String password, String memberEmail) {
+        return new MemberSignUpRequestDTO(nickname, password, memberEmail);
     }
 
 }

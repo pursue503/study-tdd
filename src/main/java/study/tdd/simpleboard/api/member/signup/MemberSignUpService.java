@@ -2,6 +2,7 @@ package study.tdd.simpleboard.api.member.signup;
 
 import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.member.entity.MemberRepository;
+import study.tdd.simpleboard.api.member.signup.dto.MemberSignUpRequestDTO;
 import study.tdd.simpleboard.api.member.signup.valid.Valid;
 
 public class MemberSignUpService {
@@ -19,36 +20,23 @@ public class MemberSignUpService {
 
     // Method
 
-    public Member saveMember(String nickname, String password, String memberEmail) {
-        if (!validateSignUpParam(nickname, password, memberEmail)) {
+    public Member saveMember(MemberSignUpRequestDTO memberSignUpRequestDTO) {
+        if (!memberSignUpRequestDTO.validateParam()) {
             return null;
         }
-        if (!validateNickname(nickname)) {
-            return null;
-
-        }
-        if (!validatePassword(password)) {
+        if (!validationNickname.verify(memberSignUpRequestDTO.getNickname())) {
             return null;
 
         }
-        if (checkDuplicatedNickname(nickname)) {
+        if (!validationPassword.verify(memberSignUpRequestDTO.getPassword())) {
             return null;
 
         }
-        return new Member(memberEmail, nickname, password);
-    }
+        if (checkDuplicatedNickname(memberSignUpRequestDTO.getNickname())) {
+            return null;
 
-    public boolean validateSignUpParam(String nickname, String password, String memberEmail) {
-        return nickname != null && password != null && memberEmail != null;
-    }
-
-
-    public boolean validateNickname(String nickname) {
-        return validationNickname.verify(nickname);
-    }
-
-    public boolean validatePassword(String password) {
-        return validationPassword.verify(password);
+        }
+        return memberSignUpRequestDTO.toEntity();
     }
 
     public boolean checkDuplicatedNickname(String nickname) {
