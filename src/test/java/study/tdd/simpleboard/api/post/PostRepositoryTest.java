@@ -2,7 +2,6 @@ package study.tdd.simpleboard.api.post;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,7 +17,6 @@ import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -115,7 +113,7 @@ public class PostRepositoryTest {
         String lastestPost = postPage.stream()
                 .map(Post::getPostTitle)
                 .findFirst()
-                .orElseThrow(() -> new BizException(PostCrudErrorCode.POST_NOT_FOUND));
+                .orElseThrow(() -> new BizException(PostCrudErrorCode.POST_CRUD_FAIL));
 
         Post lastestSavedPost = postRepository.findById(24L)
                 .orElseThrow(() -> new BizException(PostCrudErrorCode.POST_NOT_FOUND));
@@ -134,23 +132,6 @@ public class PostRepositoryTest {
                 .image("/image.png")
                 .build();
 
-        // 실행
-        /*
-            TODO: SELECT p.post_id
-                  FROM member m inner join post p
-                  ON m.member_id = p.member_id
-                  WHERE EXISTS (
-                     SELECT p2.post_id
-                     FROM POST p2
-                     p2.member_id = :member.getId());
-
-            쿼리를 질의하여 존재하지 않으면:
-                throw new BizException(PostCrudErrorCode.PATCH_NOT_PERMIT) 반환
-            존재하면
-                UPDATE post
-                SET post_title=:wantToChange.getPostTitle() ....
-                WHERE post_id = :위에서 가져온 p.post_id
-         */
 
         // 검증
     }
@@ -159,9 +140,9 @@ public class PostRepositoryTest {
     @DisplayName("게시물 1개 삭제")
     void deleteOnePost() {
 
-        // TODO: memberRepository가 준비되는대로 재구현 대기중
-
         // 준비
+        Long requestedMemberTodeleteAPost = member.getMemberId();
+
         Post wantToDelete = Post.builder()
                 .postTitle("32번 제목")
                 .postContent("32번 내용")
@@ -169,22 +150,23 @@ public class PostRepositoryTest {
                 .image("/image.png")
                 .build();
 
-        // 준비 - 저장 실행
+        // 준비 - 게시물 저장
         Post saved = postRepository.save(wantToDelete);
 
-        // 삭제 전 검증
+        // 1차 검증 - 삭제하려는 게시물이 존재하는가
         Post canFindPost = postRepository.findById(saved.getPostId())
                 .orElseThrow(() -> new BizException(PostCrudErrorCode.POST_NOT_FOUND));
 
+        assertThat(requestedMemberTodeleteAPost).isEqualTo(canFindPost.getMember()
+                                                                      .getMemberId());
         assertThat(canFindPost).isEqualTo(saved);
-
-        // 삭제 실행
-
+        // 저장한 게시물 삭제 실행
+        postRepository.delete(wantToDelete);
 
         // 삭제 후 검증
-        assertThatThrownBy(() -> {
-            postRepository.findById(saved.getPostId())
-                    .orElseThrow(() -> new BizException(PostCrudErrorCode.POST_NOT_FOUND));
-        });
+        assertThatThrownBy(() -> postRepository.findById(saved.getPostId())
+                                               .orElseThrow(() -> new BizException(PostCrudErrorCode.POST_NOT_FOUND)))
+        .hasMessageContaining("해당 게시물을 찾을 수 없습니다.");
+
     }
 }
