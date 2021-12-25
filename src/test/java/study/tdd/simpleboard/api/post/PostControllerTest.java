@@ -54,7 +54,7 @@ public class PostControllerTest {
     }
 
     @Nested
-    @DisplayName("게시물 제목 테스트")
+    @DisplayName("게시물 저장 테스트: 제목 매개변수 검증")
     class PostTitleTest {
 
         @Test
@@ -126,7 +126,7 @@ public class PostControllerTest {
     }
 
     @Nested
-    @DisplayName("게시물 내용 테스트")
+    @DisplayName("게시물 저장 테스트: 내용 및 이미지 매개변수 검증")
     class PostContentTest {
 
         // magic words
@@ -211,5 +211,17 @@ public class PostControllerTest {
 
             verify(postService, atLeastOnce()).savePost(refEq(requestedPostSave));
         }
+    }
+
+    @Test
+    @DisplayName("게시물 수정")
+    public void updatePost() {
+
+    }
+
+    @Test
+    @DisplayName("게시물 삭제")
+    public void deletePost() {
+
     }
 }
