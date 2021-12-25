@@ -14,15 +14,15 @@ public class MemberEntityTest {
 
     @Test
     public void createProperties() {
-        // given
+        // 준비
         String nickname = "nickname";
         String password = "password";
         String memberEmail = "abc1234@naver.com";
 
-        // when
+        // 실행
         Member member = new Member(memberEmail, nickname, password);
 
-        // then
+        // 검증
         assertThat(member.getNickname()).isEqualTo(nickname);
         assertThat(member.getPassword()).isEqualTo(password);
     }

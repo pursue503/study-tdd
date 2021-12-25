@@ -20,29 +20,29 @@ public class MemberRepositoryTest {
 
     @Test
     public void saveMember() {
-        // given
+        // 준비
         String nickname = "Informix";
         String password = "q1w2e3";
         String memberEmail = "abc1234@naber.com";
         Member wantToSaveMember = new Member(memberEmail, nickname, password);
 
-        // when
+        // 실행
         Member savedMember = memberRepository.save(wantToSaveMember);
 
-        // then
+        // 검증
         assertThat(savedMember).isInstanceOf(Member.class);
         assertThat(savedMember).isEqualTo(wantToSaveMember);
     }
 
     @Test
     public void findMemberId() {
-        // given
+        // 준비
         String nickname = "Informix";
         String password = "q1w2e3";
         String memberEmail = "abc1234@naver.com";
         Member wantToSaveMember = new Member(memberEmail, nickname, password);
 
-        // when
+        // 실행
         Member saveMember = memberRepository.save(wantToSaveMember);
 
         // 영속성 컨텍스트 저장하고 비우기
@@ -51,7 +51,7 @@ public class MemberRepositoryTest {
 
         Member findMember = memberRepository.findById(saveMember.getMemberId()).orElseThrow(NullPointerException::new);
 
-        // then
+        // 검증
         assertThat(findMember).isInstanceOf(Member.class);
         assertThat(findMember.getNickname()).isEqualTo(nickname);
         assertThat(findMember.getPassword()).isEqualTo(password);

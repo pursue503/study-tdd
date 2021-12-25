@@ -18,6 +18,8 @@ public class MemberSignUpRequestDTOTest {
 
         // 준비
         MemberSignUpRequestDTO memberSignUpRequestDTO = new MemberSignUpRequestDTO(nickname, password, memberEmail);
+
+        // 실행 검증
         assertThat(memberSignUpRequestDTO.validateParam()).isTrue();
     }
 
@@ -25,10 +27,10 @@ public class MemberSignUpRequestDTOTest {
     @ValueSource(strings = {"nickname", "Informix", "JaeHyun"})
     @DisplayName("파라매터가 1개 이상 비어 있을 때 False 를 반환하는 것을 확인한다.")
     public void whenOneParameterIsNull(String nickname) {
-        // given
+        // 준비
         MemberSignUpRequestDTO memberSignUpRequestDTO = new MemberSignUpRequestDTO(nickname, null, null);
 
-        // when then
+        // 실행 검증
         assertThat(memberSignUpRequestDTO.validateParam()).isFalse();
     }
 
@@ -37,10 +39,10 @@ public class MemberSignUpRequestDTOTest {
     @DisplayName("DTO 에서 Member 객체가 생성되는지 확인한다.")
     public void createMember(String nickname, String password, String memberEmail) {
 
-        // given
+        // 준비
         MemberSignUpRequestDTO memberSignUpRequestDTO = new MemberSignUpRequestDTO(nickname, password, memberEmail);
 
-        // when then
+        // 실행 검증
         assertThat(memberSignUpRequestDTO.toEntity()).isInstanceOf(Member.class);
     }
 

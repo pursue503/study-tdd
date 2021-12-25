@@ -33,10 +33,10 @@ public class MemberSignUpServiceTest {
     @DisplayName("모든 조건을 통과시키고 회원가입을 성공한다.")
     public void saveMember(String nickname, String password, String memberEmail) {
 
-        // given
+        // 준비
         MemberSignUpRequestDTO memberSignUpRequestDTO = toMemberSignUpRequestDTO(nickname, password, memberEmail);
 
-        // when then
+        // 실행 검증
         assertThat(memberSignUpService.saveMember(memberSignUpRequestDTO)).isEqualTo("회원가입에 성공하였습니다.");
     }
 
@@ -45,10 +45,10 @@ public class MemberSignUpServiceTest {
     @DisplayName("회원가입 조건에서 닉네임 조건이 안맞을 경우 BizException 을 발생시킨다.")
     public void BizExceptionWhenNotValidNickname(String nickname, String password, String memberEmail) {
 
-        // given
+        // 준비
         MemberSignUpRequestDTO memberSignUpRequestDTO = toMemberSignUpRequestDTO(nickname, password, memberEmail);
 
-        // when then
+        // 실행 검증
         assertThatThrownBy(() -> memberSignUpService.saveMember(memberSignUpRequestDTO))
                 .isInstanceOf(BizException.class)
                 .hasMessage(MemberSignUpErrorCode.SIGN_UP_NICKNAME_NOT_VALID.getMsg());
@@ -59,10 +59,11 @@ public class MemberSignUpServiceTest {
     @DisplayName("회원가입시 회원의 아이디가 중복되어있으면 BizException 을 발생시킨다.")
     public void BizExceptionWhenDuplicatedNickname(String nickname, String password, String memberEmail) {
 
+        // 준비
         MemberSignUpRequestDTO memberSignUpRequestDTO = toMemberSignUpRequestDTO(nickname, password, memberEmail);
-
         given(memberRepository.existsByNickname(memberSignUpRequestDTO.getNickname())).willReturn(true);
 
+        // 실행 검증
         assertThatThrownBy(() -> memberSignUpService.saveMember(memberSignUpRequestDTO))
                 .isInstanceOf(BizException.class)
                 .hasMessage(MemberSignUpErrorCode.SIGN_UP_NICKNAME_DUPLICATED.getMsg());
@@ -72,11 +73,11 @@ public class MemberSignUpServiceTest {
     @CsvSource(value = {"nickname1234:abcd12:pursue503@naver.com"}, delimiterString = ":")
     @DisplayName("회원가입시 회원의 비밀번호가 조건을 만족하지 못하면 BizException 을 발생시킨다.")
     public void BizExceptionWhenNotValidPassword(String nickname, String password, String memberEmail) {
-        // given
+        // 준비
         MemberSignUpRequestDTO memberSignUpRequestDTO = toMemberSignUpRequestDTO(nickname, password, memberEmail);
 
-        // when then
-        assertThatThrownBy(() -> memberSignUpService.saveMember(memberSignUpRequestDTO))
+        // 실행 검증
+      assertThatThrownBy(() -> memberSignUpService.saveMember(memberSignUpRequestDTO))
                 .isInstanceOf(BizException.class)
                 .hasMessage(MemberSignUpErrorCode.SIGN_UP_PASSWORD_NOT_VALID.getMsg());
     }
@@ -85,7 +86,11 @@ public class MemberSignUpServiceTest {
     @ValueSource(strings = {"nickname123", "nicknames33"})
     @DisplayName("닉네임이 중복되어있으면 True 를 반환한다.")
     public void duplicatedNickname(String nickname) {
+
+        // 준비
         given(memberRepository.existsByNickname(nickname)).willReturn(true);
+
+        // 실행 검증
         assertThat(memberSignUpService.checkDuplicatedNickname(nickname)).isTrue();
     }
 

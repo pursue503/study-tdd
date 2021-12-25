@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ValidationPasswordTest {
 
     Valid valid = new ValidationPassword();
-    
+
     @ParameterizedTest
     @ValueSource(strings = {"abcd1234!A", "bbbb1111@#A"})
     @DisplayName("모든 조건을 만족할 때 (8자 이상, 대문자하나 포함, 특수문자 하나포함, 숫자 하나이상) True 를 반환한다.")
@@ -45,5 +45,5 @@ public class ValidationPasswordTest {
     public void meetTheNumberCondition(String password) {
         assertThat(valid.verify(password)).isFalse();
     }
-    
+
 }
