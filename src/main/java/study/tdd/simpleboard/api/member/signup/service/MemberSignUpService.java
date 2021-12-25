@@ -1,28 +1,29 @@
 package study.tdd.simpleboard.api.member.signup.service;
 
-import study.tdd.simpleboard.api.member.entity.Member;
+import org.springframework.stereotype.Service;
 import study.tdd.simpleboard.api.member.entity.MemberRepository;
 import study.tdd.simpleboard.api.member.signup.dto.MemberSignUpRequestDTO;
 import study.tdd.simpleboard.api.member.signup.valid.Valid;
+import study.tdd.simpleboard.api.member.signup.valid.ValidationNickname;
+import study.tdd.simpleboard.api.member.signup.valid.ValidationPassword;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.member.signup.MemberSignUpErrorCode;
 
+@Service
 public class MemberSignUpService {
 
-    private final Valid validationNickname;
-    private final Valid validationPassword;
+    private final Valid validationNickname = new ValidationNickname();
+    private final Valid validationPassword = new ValidationPassword();
     private final MemberRepository memberRepository;
 
     // Constructor
-    public MemberSignUpService(MemberRepository memberRepository, Valid validationNickname, Valid validationPassword) {
+    public MemberSignUpService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
-        this.validationNickname = validationNickname;
-        this.validationPassword = validationPassword;
     }
 
     // Method
 
-    public Member saveMember(MemberSignUpRequestDTO memberSignUpRequestDTO) {
+    public String saveMember(MemberSignUpRequestDTO memberSignUpRequestDTO) {
         if (!memberSignUpRequestDTO.validateParam()) {
             throw new BizException(MemberSignUpErrorCode.SIGN_UP_PARAM_NULL_OR_EMPTY);
         }
@@ -36,7 +37,8 @@ public class MemberSignUpService {
         if (checkDuplicatedNickname(memberSignUpRequestDTO.getNickname())) {
             throw new BizException(MemberSignUpErrorCode.SIGN_UP_NICKNAME_DUPLICATED);
         }
-        return memberSignUpRequestDTO.toEntity();
+        memberRepository.save(memberSignUpRequestDTO.toEntity());
+        return "회원가입에 성공하였습니다.";
     }
 
     public boolean checkDuplicatedNickname(String nickname) {

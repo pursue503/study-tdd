@@ -5,12 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.member.entity.MemberRepository;
 import study.tdd.simpleboard.api.member.signup.dto.MemberSignUpRequestDTO;
 import study.tdd.simpleboard.api.member.signup.service.MemberSignUpService;
-import study.tdd.simpleboard.api.member.signup.valid.ValidationNickname;
-import study.tdd.simpleboard.api.member.signup.valid.ValidationPassword;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.member.signup.MemberSignUpErrorCode;
 
@@ -24,7 +21,7 @@ public class MemberSignUpServiceTest {
 
     MemberRepository memberRepository = mock(MemberRepository.class);
 
-    MemberSignUpService memberSignUpService = new MemberSignUpService(memberRepository, new ValidationNickname(), new ValidationPassword());
+    MemberSignUpService memberSignUpService = new MemberSignUpService(memberRepository);
 
     @Test
     public void createMemberService() {
@@ -40,7 +37,7 @@ public class MemberSignUpServiceTest {
         MemberSignUpRequestDTO memberSignUpRequestDTO = toMemberSignUpRequestDTO(nickname, password, memberEmail);
 
         // when then
-        assertThat(memberSignUpService.saveMember(memberSignUpRequestDTO)).isInstanceOf(Member.class);
+        assertThat(memberSignUpService.saveMember(memberSignUpRequestDTO)).isEqualTo("회원가입에 성공하였습니다.");
     }
 
     @ParameterizedTest
