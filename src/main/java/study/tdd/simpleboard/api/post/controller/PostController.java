@@ -2,16 +2,19 @@ package study.tdd.simpleboard.api.post.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import study.tdd.simpleboard.api.common.ResponseDTO;
 import study.tdd.simpleboard.api.post.domain.PostSaveRequestDTO;
+import study.tdd.simpleboard.api.post.entity.Post;
 import study.tdd.simpleboard.api.post.service.PostService;
 import study.tdd.simpleboard.exception.post.InvalidPostParameterException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 게시물과 관련된 작업 요청을 처리하는 컨트롤러
@@ -42,16 +45,12 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public ResponseDTO<PostResponseDTO> findOnePost(@PathVariable Long postId) {
-        // TODO: postService.findOnePost(postId)
-        return new ResponseDTO<>(new PostResponseDTO(), "게시물이 잘 조회되었습니다.", HttpStatus.OK);
+    public ResponseDTO<Post> findOnePost(@PathVariable Long postId) {
+        return new ResponseDTO<>(postService.findOnePost(postId), "게시물이 잘 조회되었습니다.", HttpStatus.OK);
     }
 
-    /* TODO: TEST 코드를 먼저 작성한 뒤에 재활성화
     @GetMapping("/posts")
-    public ResponseDTO<PostResponseDTO> pagingPost(@RequestParam Long page) {
-        // TODO: postService.findPostList(page)
-        return new ResponseDTO<>(new PostResponseDTO(), "게시물이 잘 조회되었습니다.", HttpStatus.OK);
+    public ResponseDTO<List<Post>> pagingPost(@RequestParam int page) {
+        return new ResponseDTO<>(postService.findPostsPage(page), "게시물이 잘 조회되었습니다.", HttpStatus.OK);
     }
-    */
 }

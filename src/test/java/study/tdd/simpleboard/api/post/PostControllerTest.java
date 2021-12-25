@@ -214,14 +214,26 @@ public class PostControllerTest {
     }
 
     @Test
-    @DisplayName("게시물 수정")
-    public void updatePost() {
+    @DisplayName("게시물 수정 성공")
+    public void updatePostSuccess() {
 
     }
 
     @Test
-    @DisplayName("게시물 삭제")
-    public void deletePost() {
+    @DisplayName("게시물 수정 실패")
+    public void updatePostFailure() {
+
+    }
+
+    @Test
+    @DisplayName("게시물 삭제 성공")
+    public void deletePostSuccess() {
+
+    }
+
+    @Test
+    @DisplayName("게시물 삭제 실패")
+    public void deletePostFailure() {
 
     }
 }

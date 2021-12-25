@@ -13,6 +13,7 @@ import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -126,11 +127,15 @@ public class PostServiceTest {
         // 검증
         verify(postRepository, times(1)).findById(1L);
         assertThat(expectedToGetPost.get()).isEqualTo(onePost);
+        // 추가 검증
+        assertThat(expectedToGetPost.get().getBlocked()).isNotNull();
+        assertThat(expectedToGetPost.get().getBlocked()).isEqualTo(false);
+
     }
 
     @Test
-    @DisplayName("게시물 1개 조회 실패")
-    void findOnePostFailure() {
+    @DisplayName("게시물 1개 조회 실패 - 없는 게시글 조회 시도")
+    void findOnePostThatNotExistsFailure() {
         // 준비
         Throwable throwable = catchThrowable(() -> {
             throw new BizException(PostCrudErrorCode.POST_NOT_FOUND);
@@ -146,15 +151,32 @@ public class PostServiceTest {
     }
 
     @Test
+    @DisplayName("게시물 1개 조회 실패 - BLOCK 처리된 게시물 조회 시도")
+    void findOnePostThatBlockedFailure() {
+        // 준비
+        Long blockedPostId = 10L;
+
+        // 실행
+        // 검증
+        assertThatThrownBy(() -> postService.findOnePost(blockedPostId))
+                .isInstanceOf(BizException.class)
+                .hasMessageContaining("해당 게시물을 찾을 수 없습니다.");
+    }
+
+    @Test
     @DisplayName("게시물 여러 개 (제목) 조회 - 페이징 성공")
     void findPostPageSuccess() {
         // 준비
         int wantToSeePage = 0;
-        int pagingSize = 10;
+        int pageSize = 10;
+        Post savedPost1 = new Post("22번 제목", "22번 내용", image, member);
+        Post savedPost2 = new Post("23번 제목", "23번 내용", image, member);
 
-        List<Post> findPostsInSelectPage = List.of(new Post("22번 제목", "22번 내용", image, member),
-                                                   new Post("23번 제목", "23번 내용", image, member)
-                                           );
+        postRepository.save(savedPost1);
+        postRepository.save(savedPost2);
+
+        List<Post> findPostsInSelectPage = List.of(savedPost1, savedPost2);
+
         Page<Post> pagingPosts = new PageImpl<>(findPostsInSelectPage, new Pageable() {
             @Override
             public int getPageNumber() {
@@ -202,18 +224,16 @@ public class PostServiceTest {
             }
         }, 2);
 
-        given(postRepository
+        postRepository
                 .findAll(PageRequest
-                        .of(wantToSeePage, 10,
-                                Sort.by(Sort.Direction.DESC, "postId"))))
-                .willReturn(pagingPosts);
+                        .of(wantToSeePage, pageSize,
+                                Sort.by(Sort.Direction.DESC, "postId")));
 
         // 실행
-        Page<Post> result = postService.findPostsPage(wantToSeePage);
+        List<Post> result = postService.findPostsPage(wantToSeePage);
 
         // 검증
         assertThat(result).containsExactlyInAnyOrder(findPostsInSelectPage.get(0), findPostsInSelectPage.get(1));
-
     }
 
     @Test
@@ -247,10 +267,9 @@ public class PostServiceTest {
                 throw new BizException(PostCrudErrorCode.PATCH_NOT_PERMIT) 반환
             존재하면
                 UPDATE post
-                SET post_title=:wantToChange.getPostTitle() ....
+                SET post_title= :wantToChange.getPostTitle() ....
                 WHERE post_id = :위에서 가져온 p.post_id
          */
-
     }
 
     @Test
@@ -264,6 +283,7 @@ public class PostServiceTest {
     void deleteOnePostSuccess() {
         // 저장한 게시물 삭제 전 검증 - 요청자가 게시물 작성자일 경우 삭제 진행:
         // 이 테스트에서는 요청자가 작성자라고 가정하여 성공하게 한다.
+
     }
 
     @Test
