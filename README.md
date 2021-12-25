@@ -90,7 +90,6 @@ code with me 를 활용하여 어렵거나 힘든 기능을
 - 삭제
 
 ## 프로젝트 기능 요구 사항
-
 "*" : 변경이 필요한 요구사항입니다.
 
 ### ✏️회원
@@ -99,12 +98,12 @@ code with me 를 활용하여 어렵거나 힘든 기능을
   - [x] 최소 3자 이상
   - [x] 알파벳 대소문자(a~z, A~Z)
   - [x] 숫자(0~9)로 구성하기
-- [ ] 비밀번호 규칙검증: #validatePassword(String password)
-  - [ ] 최소 8자 이상
-  - [ ] 대문자 하나이상 포함
-  - [ ] 특수문자 하나이상 포함
-  - [ ] 숫자 하나이상 포함
-- [ ] 닉네임 중복 체크 #checkDuplicatedNickname(String nickname)
+- [x] 비밀번호 규칙검증: #validatePassword(String password)
+  - [x] 최소 8자 이상
+  - [x] 대문자 하나이상 포함
+  - [x] 특수문자 하나이상 포함
+  - [x] 숫자 하나이상 포함
+- [x] 닉네임 중복 체크 #checkDuplicatedNickname(String nickname)
 - [ ] 로그인 검사 - JWT (인터셉터)
   - [ ] 토큰 디코딩(복호화) JwtUtil#decode(String token)
   - [ ] 토큰 검증 JwtUtil#validateAccessToken(String token),

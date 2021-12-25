@@ -1,7 +1,6 @@
-package study.tdd.simpleboard.api.member.signup;
+package study.tdd.simpleboard.api.member.entity;
 
 import org.junit.jupiter.api.Test;
-import study.tdd.simpleboard.api.member.entity.Member;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -15,14 +14,15 @@ public class MemberEntityTest {
 
     @Test
     public void createProperties() {
-        // given
+        // 준비
         String nickname = "nickname";
         String password = "password";
+        String memberEmail = "abc1234@naver.com";
 
-        // when
-        Member member = new Member(nickname, password);
+        // 실행
+        Member member = new Member(memberEmail, nickname, password);
 
-        // then
+        // 검증
         assertThat(member.getNickname()).isEqualTo(nickname);
         assertThat(member.getPassword()).isEqualTo(password);
     }
