@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.member.entity.MemberRepository;
 import study.tdd.simpleboard.api.member.signup.dto.MemberSignUpRequestDTO;
+import study.tdd.simpleboard.api.member.signup.service.MemberSignUpService;
 import study.tdd.simpleboard.api.member.signup.valid.ValidationNickname;
 import study.tdd.simpleboard.api.member.signup.valid.ValidationPassword;
 import study.tdd.simpleboard.exception.common.BizException;
