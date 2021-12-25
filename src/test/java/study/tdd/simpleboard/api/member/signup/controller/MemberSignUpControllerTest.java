@@ -7,10 +7,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
-public class MemberControllerTest {
+public class MemberSignUpControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -24,7 +25,8 @@ public class MemberControllerTest {
         ResultActions actions = mockMvc.perform(post("/members"));
 
         // 검증
-        actions.andExpect(status().isOk());
+        actions.andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("회원가입에 성공하였습니다."));
 
     }
 

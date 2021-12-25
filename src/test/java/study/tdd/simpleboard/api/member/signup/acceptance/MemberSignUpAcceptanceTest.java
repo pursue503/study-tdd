@@ -41,9 +41,9 @@ public class MemberSignUpAcceptanceTest {
                 .post("/members")
         // 검증
                 .then()
-                .statusCode(HttpStatus.OK.value());
-//                .assertThat()
-//                .body("id", equalTo(1));
+                .statusCode(HttpStatus.OK.value())
+                .assertThat()
+                .body("message", equalTo("회원가입에 성공하였습니다."));
 
     }
 }
