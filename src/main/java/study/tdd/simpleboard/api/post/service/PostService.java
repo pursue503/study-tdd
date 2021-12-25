@@ -1,6 +1,10 @@
 package study.tdd.simpleboard.api.post.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import study.tdd.simpleboard.api.post.domain.PostSaveRequestDTO;
 import study.tdd.simpleboard.api.post.entity.Post;
@@ -22,6 +26,7 @@ import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 public class PostService {
 
     private final PostRepository postRepository;
+    int pagingSize = 10;
 
     public Post findOnePost(Long postId) {
         return postRepository.findById(postId)
@@ -31,5 +36,12 @@ public class PostService {
     public Long savePost(PostSaveRequestDTO dto) {
         return postRepository.save(dto.toEntity())
                              .getPostId();
+    }
+
+    public Page<Post> findPostsPage(int wantToSeePage) {
+        return postRepository
+                .findAll(PageRequest
+                        .of(wantToSeePage, pagingSize,
+                                Sort.by(Sort.Direction.DESC, "postId")));
     }
 }
