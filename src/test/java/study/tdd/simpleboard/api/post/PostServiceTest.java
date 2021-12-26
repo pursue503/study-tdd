@@ -2,8 +2,16 @@ package study.tdd.simpleboard.api.post;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import study.tdd.simpleboard.api.member.entity.Member;
+import study.tdd.simpleboard.api.post.domain.PageResponseDTO;
+import study.tdd.simpleboard.api.post.domain.PostOneDTO;
+import study.tdd.simpleboard.api.post.domain.PostPageDTO;
 import study.tdd.simpleboard.api.post.entity.Post;
 import study.tdd.simpleboard.api.post.repository.PostRepository;
 import study.tdd.simpleboard.api.post.service.PostService;
@@ -13,7 +21,6 @@ import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -113,23 +120,25 @@ public class PostServiceTest {
     @DisplayName("게시물 1개 조회 성공")
     void findOnePostSuccess() {
         // 준비
-        Optional<Post> expectedToGetPost = Optional.of(Post.builder()
+        Optional<Post> post = Optional.of(Post.builder()
                 .postTitle(postTItle)
                 .postContent(postContent)
+                .image("/image.png")
                 .member(member)
                 .build());
+        PostOneDTO expectedToGetPost = new PostOneDTO(post.get());
 
-        given(postRepository.findById(1L)).willReturn(expectedToGetPost);
+        given(postRepository.findById(1L)).willReturn(post);
 
         // 실행
-        Post onePost = postService.findOnePost(1L);
+        PostOneDTO onePost = postService.findOnePost(1L);
 
         // 검증
         verify(postRepository, times(1)).findById(1L);
-        assertThat(expectedToGetPost.get()).isEqualTo(onePost);
+        assertThat(expectedToGetPost.getPostId()).isEqualTo(onePost.getPostId());
         // 추가 검증
-        assertThat(expectedToGetPost.get().getBlocked()).isNotNull();
-        assertThat(expectedToGetPost.get().getBlocked()).isEqualTo(false);
+        assertThat(expectedToGetPost.getPostTitle()).isNotNull();
+        assertThat(expectedToGetPost.getImage()).isEqualTo("/image.png");
 
     }
 
@@ -167,86 +176,33 @@ public class PostServiceTest {
     @DisplayName("게시물 여러 개 (제목) 조회 - 페이징 성공")
     void findPostPageSuccess() {
         // 준비
-        int wantToSeePage = 0;
-        int pageSize = 10;
-        Post savedPost1 = new Post("22번 제목", "22번 내용", image, member);
-        Post savedPost2 = new Post("23번 제목", "23번 내용", image, member);
+        int page = 1;
+        int pagingSize = 10;
+        PostPageDTO savedPost1 = new PostPageDTO("닉네임1", 1L, "게시물 번호 1");
+        PostPageDTO savedPost2 = new PostPageDTO("닉네임2", 2L, "게시물 번호 2");
 
-        postRepository.save(savedPost1);
-        postRepository.save(savedPost2);
+        Pageable pageable = PageRequest.of(page - 1, pagingSize, Sort.by(Sort.Direction.DESC, "post_id"));
 
-        List<Post> findPostsInSelectPage = List.of(savedPost1, savedPost2);
-
-        Page<Post> pagingPosts = new PageImpl<>(findPostsInSelectPage, new Pageable() {
-            @Override
-            public int getPageNumber() {
-                return 0;
-            }
-
-            @Override
-            public int getPageSize() {
-                return 1;
-            }
-
-            @Override
-            public long getOffset() {
-                return 2;
-            }
-
-            @Override
-            public Sort getSort() {
-                return Sort.by(Sort.Direction.DESC, "postId");
-            }
-
-            @Override
-            public Pageable next() {
-                return null;
-            }
-
-            @Override
-            public Pageable previousOrFirst() {
-                return null;
-            }
-
-            @Override
-            public Pageable first() {
-                return null;
-            }
-
-            @Override
-            public Pageable withPage(int pageNumber) {
-                return null;
-            }
-
-            @Override
-            public boolean hasPrevious() {
-                return false;
-            }
-        }, 2);
-
-        postRepository
-                .findAll(PageRequest
-                        .of(wantToSeePage, pageSize,
-                                Sort.by(Sort.Direction.DESC, "postId")));
+        //given(postRepository.findAllUnblockedPosts(any(Pageable.class))).willReturn(new PageImpl<>(List.of(savedPost1, savedPost2)));
 
         // 실행
-        List<Post> result = postService.findPostsPage(wantToSeePage);
+        PageResponseDTO result = postService.findPostsPage(page);
 
         // 검증
-        assertThat(result).containsExactlyInAnyOrder(findPostsInSelectPage.get(0), findPostsInSelectPage.get(1));
+//        verify(postRepository, atLeastOnce()).findAllUnblockedPosts(pageable);
+//        assertThat(result.getSelectedPosts().getContent().get(0)).isEqualTo(savedPost1);
+//        assertThat(result.getSelectedPosts().getContent().get(1)).isEqualTo(savedPost2);
     }
 
-    @Test
+    @ParameterizedTest
     @DisplayName("게시물 여러 개 (제목) 조회 - 페이징 실패")
-    void findPostPageFailure() {
-        // 준비
-        int wantToSeePage = -1;
-
+    @ValueSource(ints = {0, -1, -999})
+    void findPostPageFailure(int invalidPage) {
         // 실행, 검증
-        assertThatIllegalArgumentException()
-                .isThrownBy(() -> postService.findPostsPage(wantToSeePage))
+        assertThatThrownBy(() -> postService.findPostsPage(invalidPage))
+                .isInstanceOf(BizException.class)
                 .describedAs("0쪽 이하의 페이지를 찾는 것은 금지되어 있습니다.")
-                .withMessageContaining("Page index must not be less than zero!");
+                .hasMessageContaining("해당 페이지를 찾을 수 없습니다.");
 
     }
 

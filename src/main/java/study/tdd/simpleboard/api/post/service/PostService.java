@@ -1,19 +1,19 @@
 package study.tdd.simpleboard.api.post.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import study.tdd.simpleboard.api.post.domain.PageResponseDTO;
+import study.tdd.simpleboard.api.post.domain.PostOneDTO;
+import study.tdd.simpleboard.api.post.domain.PostPageDTO;
 import study.tdd.simpleboard.api.post.domain.PostSaveRequestDTO;
 import study.tdd.simpleboard.api.post.entity.Post;
 import study.tdd.simpleboard.api.post.repository.PostRepository;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -34,10 +34,10 @@ public class PostService {
     private final PostRepository postRepository;
     int pagingSize = 10;
 
-    public Post findOnePost(Long postId) {
-        return postRepository.findById(postId)
-                .filter(post -> !post.getBlocked())
+    public PostOneDTO findOnePost(Long postId) {
+        Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BizException(PostCrudErrorCode.POST_NOT_FOUND));
+        return new PostOneDTO(post);
     }
 
     public Long savePost(PostSaveRequestDTO dto) {
@@ -45,14 +45,9 @@ public class PostService {
                              .getPostId();
     }
 
-    public List<Post> findPostsPage(int wantToSeePage) {
-        return postRepository
-                .findAll(PageRequest
-                        .of(wantToSeePage, pagingSize,
-                                Sort.by(Sort.Direction.DESC, "postId")))
-                .getContent()
-                .stream()
-                .filter(post -> !post.getBlocked())
-                .collect(toList());
+    public PageResponseDTO findPostsPage(int page) {
+        if ((page = (page - 1) * 10) < 0) throw new BizException(PostCrudErrorCode.PAGE_NOT_FOUND);
+        Pageable pageable = PageRequest.of(page, pagingSize, Sort.by(Sort.Direction.DESC, "post_id"));
+        return new PageResponseDTO(page, postRepository.findAllUnblockedPosts(pageable));
     }
 }

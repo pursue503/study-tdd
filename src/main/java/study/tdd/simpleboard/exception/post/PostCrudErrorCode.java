@@ -25,8 +25,8 @@ public enum PostCrudErrorCode implements ErrorCode {
     POST_CONTENT_IS_NULL(HttpStatus.BAD_REQUEST, -404, "게시물 내용이 반드시 전달되어야 합니다."),
     POST_CONTENT_IS_EMPTY(HttpStatus.BAD_REQUEST, -405, "게시물 내용이 비어 있으면 안됩니다."),
     POST_CONTENT_IS_EXCEEDED(HttpStatus.BAD_REQUEST, -406, "게시물 내용은 2000 글자를 초과할 수 없습니다."),
-    POST_NOT_FOUND(HttpStatus.NOT_FOUND, -407, "해당 게시물을 찾을 수 없습니다.");
-
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, -407, "해당 게시물을 찾을 수 없습니다."),
+    PAGE_NOT_FOUND(HttpStatus.NOT_FOUND, -408, "해당 페이지를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final Integer bizCode;
