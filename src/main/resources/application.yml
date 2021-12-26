@@ -20,10 +20,3 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
-        dialect: org.hibernate.dialect.MySQL5Dialect
-  messages:
-    encoding: UTF-8
-
-server:
-  tomcat:
-    uri-encoding: UTF-8
