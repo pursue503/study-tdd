@@ -162,7 +162,7 @@ public class PostRepositoryTest {
                 SET post_title= :wantToChange.getPostTitle() ....
                 WHERE post_id = :위에서 가져온 p.post_id
          */
-        Long wantChangePostId = 10L;
+        Long wantChangePostId = 20L;
 
         // 실행
         Post targetPost = postRepository.findById(wantChangePostId)
@@ -193,8 +193,6 @@ public class PostRepositoryTest {
         // 준비 - 게시물 저장
         Post saved = postRepository.save(wantToDelete);
 
-
-
         // 1차 검증 - 삭제하려는 게시물이 존재하는가
         Post canFindPost = postRepository.findById(saved.getPostId())
                 .orElseThrow(() -> new BizException(PostCrudErrorCode.POST_NOT_FOUND));
@@ -209,6 +207,5 @@ public class PostRepositoryTest {
         assertThatThrownBy(() -> postRepository.findById(saved.getPostId())
                                                .orElseThrow(() -> new BizException(PostCrudErrorCode.POST_NOT_FOUND)))
         .hasMessageContaining("해당 게시물을 찾을 수 없습니다.");
-
     }
 }
