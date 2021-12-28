@@ -2,6 +2,7 @@ package study.tdd.simpleboard.api.post.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,17 +24,10 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "SELECT p " +
-                   "FROM Post p inner join Member m " +
+                   "FROM Post p INNER JOIN p.member m " +
                    "ON p.member.memberId = m.memberId " +
                    "WHERE p.blocked = false ")
     Page<Post> findAllUnblockedPosts(Pageable pageable);
-
-    /**
-     * @Query(value = "SELECT p.postId, p.postTitle, m.nickname " +
-     *                     "FROM Post p join fetch Member m " +
-     *                     "ON p.member.memberId = m.memberId " +
-     *                     "WHERE p.blocked = false ")
-     */
 
     @Query(value = "SELECT p " +
             "FROM Post p join fetch p.member m " +

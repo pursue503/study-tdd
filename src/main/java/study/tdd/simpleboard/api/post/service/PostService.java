@@ -42,12 +42,12 @@ public class PostService {
 
     public Long savePost(PostSaveRequestDTO dto) {
         return postRepository.save(dto.toEntity())
-                             .getPostId();
+                .getPostId();
     }
 
     public PageResponseDTO findPostsPage(int page) {
         if ((page = (page - 1) * 10) < 0) throw new BizException(PostCrudErrorCode.PAGE_NOT_FOUND);
-        Pageable pageable = PageRequest.of(page, pagingSize, Sort.by(Sort.Direction.DESC, "post_id"));
+        Pageable pageable = PageRequest.of(page, pagingSize, Sort.by(Sort.Direction.DESC, "postId"));
         return new PageResponseDTO(page, postRepository.findAllUnblockedPosts(pageable));
     }
 }
