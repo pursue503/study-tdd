@@ -46,8 +46,11 @@ public class PostService {
     }
 
     public PageResponseDTO findPostsPage(int page) {
-        if ((page = (page - 1) * 10) < 0) throw new BizException(PostCrudErrorCode.PAGE_NOT_FOUND);
+        if ((page = page - 1) < 0) throw new BizException(PostCrudErrorCode.PAGE_NOT_FOUND);
+        System.out.println("pageNumber: " + page);
         Pageable pageable = PageRequest.of(page, pagingSize, Sort.by(Sort.Direction.DESC, "postId"));
-        return new PageResponseDTO(page, postRepository.findAllUnblockedPosts(pageable));
+        PageResponseDTO pageResponseDTO = new PageResponseDTO(page, postRepository.findAllUnblockedPosts(pageable));
+        if (pageResponseDTO.getTotalPages() < (page + 1)) throw new BizException(PostCrudErrorCode.PAGE_NOT_FOUND);
+        return pageResponseDTO;
     }
 }

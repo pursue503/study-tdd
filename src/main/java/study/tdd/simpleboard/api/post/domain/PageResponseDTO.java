@@ -16,7 +16,7 @@ public class PageResponseDTO {
     private final int totalPages;
 
     public PageResponseDTO(int selectedPageNumber, Page<Post> selectedPosts) {
-        this.selectedPageNumber = selectedPageNumber;
+        this.selectedPageNumber = (int) Math.ceil((selectedPageNumber + 1) / 10.0);
         this.selectedPosts = selectedPosts.getContent();
         this.totalPages = selectedPosts.getTotalPages();
     }
