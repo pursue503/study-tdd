@@ -63,11 +63,6 @@ public class Post {
         return this;
     }
 
-    public Post toggleBlock() {
-        this.blocked = !this.blocked;
-        return this;
-    }
-
     private static class YNToBooleanConverter implements AttributeConverter<Boolean, String> {
 
         /**
