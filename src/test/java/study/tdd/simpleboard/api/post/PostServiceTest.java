@@ -4,10 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.post.domain.PageResponseDTO;
 import study.tdd.simpleboard.api.post.domain.PostOneDTO;
@@ -18,8 +15,10 @@ import study.tdd.simpleboard.api.post.service.PostService;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -178,20 +177,23 @@ public class PostServiceTest {
         // 준비
         int page = 1;
         int pagingSize = 10;
-        PostPageDTO savedPost1 = new PostPageDTO("닉네임1", 1L, "게시물 번호 1");
-        PostPageDTO savedPost2 = new PostPageDTO("닉네임2", 2L, "게시물 번호 2");
 
-        Pageable pageable = PageRequest.of(page - 1, pagingSize, Sort.by(Sort.Direction.DESC, "post_id"));
+        Post savedPost1 = new Post(24L, "게시물 제목 24번", "게시물 내용 24번", null, member);
+        Post savedPost2 = new Post(23L, "게시물 제목 23번", "게시물 내용 23번", null, member);
 
-        //given(postRepository.findAllUnblockedPosts(any(Pageable.class))).willReturn(new PageImpl<>(List.of(savedPost1, savedPost2)));
+        List<Post> savedPagePosts = List.of(savedPost1, savedPost2);
+        PageImpl<Post> posts = new PageImpl<>(savedPagePosts);
+        Pageable pageable = PageRequest.of(page - 1, pagingSize, Sort.by(Sort.Direction.DESC, "postId"));
+
+        given(postRepository.findAllUnblockedPosts(any(Pageable.class))).willReturn(posts);
 
         // 실행
         PageResponseDTO result = postService.findPostsPage(page);
 
         // 검증
-//        verify(postRepository, atLeastOnce()).findAllUnblockedPosts(pageable);
-//        assertThat(result.getSelectedPosts().getContent().get(0)).isEqualTo(savedPost1);
-//        assertThat(result.getSelectedPosts().getContent().get(1)).isEqualTo(savedPost2);
+        verify(postRepository, atLeastOnce()).findAllUnblockedPosts(refEq(pageable));
+        assertThat(result.getSelectedPosts().get(0)).isEqualTo(savedPost1);
+        assertThat(result.getSelectedPosts().get(1)).isEqualTo(savedPost2);
     }
 
     @ParameterizedTest
@@ -203,7 +205,6 @@ public class PostServiceTest {
                 .isInstanceOf(BizException.class)
                 .describedAs("0쪽 이하의 페이지를 찾는 것은 금지되어 있습니다.")
                 .hasMessageContaining("해당 페이지를 찾을 수 없습니다.");
-
     }
 
     @Test
@@ -239,12 +240,35 @@ public class PostServiceTest {
     void deleteOnePostSuccess() {
         // 저장한 게시물 삭제 전 검증 - 요청자가 게시물 작성자일 경우 삭제 진행:
         // 이 테스트에서는 요청자가 작성자라고 가정하여 성공하게 한다.
+        // 준비
+        Long postId = 1L;
+        Post wantToDelete = Post.builder().postTitle("삭제될 게시물의 제목").build();
+        given(postRepository.findById(postId))
+                .willReturn(Optional.of(wantToDelete));
+        doNothing().when(postRepository).delete(wantToDelete);
 
+        // 실행
+        postService.deleteOnePost(postId);
+
+        // 검증
+        verify(postRepository, atLeastOnce()).findById(postId);
+        verify(postRepository, atLeastOnce()).delete(wantToDelete);
     }
 
     @Test
-    @DisplayName("게시물 1개 삭제 실패")
+    @DisplayName("게시물 1개 삭제 실패 - 없는 게시물 번호")
     void deleteOnePostFailure() {
+        // 준비
+        Long postId = -1L;
+        Post wantToDelete = Post.builder().postTitle("삭제될 게시물의 제목").build();
 
+        // 검증, 실행
+        assertThatThrownBy(() -> postRepository.findById(postId)
+                .orElseThrow(() -> new BizException(PostCrudErrorCode.POST_NOT_FOUND)))
+                .isInstanceOf(BizException.class)
+                .hasMessageContaining("해당 게시물을 찾을 수 없습니다.");
+
+        verify(postRepository, atLeastOnce()).findById(postId);
+        verify(postRepository, never()).delete(wantToDelete);
     }
 }

@@ -47,7 +47,8 @@ public class Post {
     }
 
     @Builder
-    public Post(String postTitle, String postContent, String image, Member member) {
+    public Post(Long postId, String postTitle, String postContent, String image, Member member) {
+        this.postId = postId;
         this.postTitle = postTitle;
         this.postContent = postContent;
         this.image = image;
