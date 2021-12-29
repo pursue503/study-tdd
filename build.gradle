@@ -27,6 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.h2database:h2'
@@ -35,6 +36,17 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
 
+    // rest-assured
+    testImplementation 'io.rest-assured:rest-assured'
+
+    // gson
+    implementation 'com.google.code.gson:gson:2.8.8'
+
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation:2.5.4'
+
+    // query tracker
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 }
 
 test {
