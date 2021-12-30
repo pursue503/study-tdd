@@ -2,7 +2,7 @@ package study.tdd.simpleboard.api.post.domain;
 
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
-import study.tdd.simpleboard.api.post.entity.Post;
+import study.tdd.simpleboard.api.post.domain.entity.Post;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

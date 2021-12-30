@@ -2,7 +2,7 @@ package study.tdd.simpleboard.api.post.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import study.tdd.simpleboard.api.post.entity.Post;
+import study.tdd.simpleboard.api.post.domain.entity.Post;
 
 @Getter
 @RequiredArgsConstructor

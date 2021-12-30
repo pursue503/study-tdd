@@ -9,7 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.member.entity.MemberRepository;
-import study.tdd.simpleboard.api.post.entity.Post;
+import study.tdd.simpleboard.api.post.domain.entity.Post;
 import study.tdd.simpleboard.api.post.repository.PostRepository;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;

@@ -20,7 +20,7 @@ import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.post.controller.PostController;
 import study.tdd.simpleboard.api.post.controller.PostControllerAdvice;
 import study.tdd.simpleboard.api.post.domain.*;
-import study.tdd.simpleboard.api.post.entity.Post;
+import study.tdd.simpleboard.api.post.domain.entity.Post;
 import study.tdd.simpleboard.api.post.service.PostService;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;

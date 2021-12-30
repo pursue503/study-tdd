@@ -1,4 +1,4 @@
-package study.tdd.simpleboard.api.post.entity;
+package study.tdd.simpleboard.api.post.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
@@ -36,7 +36,7 @@ public class Post {
     @Convert(converter = YNToBooleanConverter.class)
     private Boolean blocked;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "member_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ToString.Exclude
