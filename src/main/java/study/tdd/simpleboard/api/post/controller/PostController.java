@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import study.tdd.simpleboard.api.common.ResponseDTO;
 import study.tdd.simpleboard.api.post.domain.*;
+import study.tdd.simpleboard.api.post.domain.enums.PostMessage;
 import study.tdd.simpleboard.api.post.service.PostService;
 import study.tdd.simpleboard.exception.post.InvalidPostParameterException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
@@ -41,17 +42,17 @@ public class PostController {
         if (result.hasErrors()) {
             throw new InvalidPostParameterException(result, PostCrudErrorCode.POST_CRUD_FAIL);
         }
-        return new ResponseDTO<>(postService.savePost(dto), "게시물이 잘 저장되었습니다.", HttpStatus.OK);
+        return new ResponseDTO<>(postService.savePost(dto), PostMessage.SAVE_POST_SUCCESS, HttpStatus.OK);
     }
 
     @GetMapping("/posts/{postId}")
     public ResponseDTO<PostOneDTO> findOnePost(@PathVariable Long postId) {
-        return new ResponseDTO<>(postService.findOnePost(postId), "게시물이 잘 조회되었습니다.", HttpStatus.OK);
+        return new ResponseDTO<>(postService.findOnePost(postId), PostMessage.FIND_POST_ONE_SUCCESS, HttpStatus.OK);
     }
 
     @GetMapping("/posts")
     public ResponseDTO<PageResponseDTO> findPostPage(@RequestParam int page) {
-        return new ResponseDTO<>(postService.findPostsPage(page), "게시물 목록이 잘 조회되었습니다.", HttpStatus.OK);
+        return new ResponseDTO<>(postService.findPostsPage(page), PostMessage.FIND_POST_PAGE_SUCCESS, HttpStatus.OK);
     }
 
     @PatchMapping("/posts")
@@ -59,11 +60,11 @@ public class PostController {
         if (result.hasErrors()) {
             throw new InvalidPostParameterException(result, PostCrudErrorCode.POST_CRUD_FAIL);
         }
-        return new ResponseDTO<>(postService.updateOnePost(dto), "게시물이 수정되었습니다.", HttpStatus.OK);
+        return new ResponseDTO<>(postService.updateOnePost(dto), PostMessage.UPDATE_POST_SUCCESS, HttpStatus.OK);
     }
 
     @DeleteMapping("/posts/{postId}")
     public ResponseDTO<LocalDateTime> deleteOnePost(@PathVariable Long postId) {
-        return new ResponseDTO<>(postService.deleteOnePost(postId), "게시물이 삭제되었습니다.", HttpStatus.OK);
+        return new ResponseDTO<>(postService.deleteOnePost(postId), PostMessage.DELETE_POST_SUCCESS, HttpStatus.OK);
     }
 }

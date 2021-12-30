@@ -14,7 +14,6 @@ insert into MEMBER (member_email, nickname, password) values ('kk@mail.com', 'k'
 insert into MEMBER (member_email, nickname, password) values ('mm@mail.com', 'm', '1234');
 insert into MEMBER (member_email, nickname, password) values ('pp@mail.com', 'p', '1234');
 
-
 insert into POST (post_title, post_content, blocked, member_id) values ('1번 게시물 제목입니다.', '1번 게시물의 내용입니다.', 'N', 1);
 insert into POST (post_title, post_content, blocked, member_id) values ('2번 게시물 제목입니다.', '2번 게시물의 내용입니다.', 'N', 1);
 insert into POST (post_title, post_content, blocked, member_id) values ('3번 게시물 제목입니다.', '3번 게시물의 내용입니다.', 'N', 2);
@@ -39,28 +38,3 @@ insert into POST (post_title, post_content, blocked, member_id) values ('21번 �
 insert into POST (post_title, post_content, blocked, member_id) values ('22번 게시물 제목입니다.', '22번 게시물의 내용입니다.', 'N', 12);
 insert into POST (post_title, post_content, blocked, member_id) values ('23번 게시물 제목입니다.', '23번 게시물의 내용입니다.', 'N', 12);
 insert into POST (post_title, post_content, blocked, member_id) values ('24번 게시물 제목입니다.', '24번 게시물의 내용입니다.', 'N', 13);
-
-insert into BOARD (boardtitle, member_id) values ('1번 게시물 제목입니다.', 1);
-insert into BOARD (boardtitle, member_id) values ('2번 게시물 제목입니다.', 1);
-insert into BOARD (boardtitle, member_id) values ('3번 게시물 제목입니다.', 2);
-insert into BOARD (boardtitle, member_id) values ('4번 게시물 제목입니다.', 2);
-insert into BOARD (boardtitle, member_id) values ('5번 게시물 제목입니다.', 2);
-insert into BOARD (boardtitle, member_id) values ('6번 게시물 제목입니다.', 2);
-insert into BOARD (boardtitle, member_id) values ('7번 게시물 제목입니다.', 3);
-insert into BOARD (boardtitle, member_id) values ('8번 게시물 제목입니다.', 3);
-insert into BOARD (boardtitle, member_id) values ('9번 게시물 제목입니다.', 3);
-insert into BOARD (boardtitle, member_id) values ('10번 게시물 제목입니다.', 4);
-insert into BOARD (boardtitle, member_id) values ('11번 게시물 제목입니다.', 4);
-insert into BOARD (boardtitle, member_id) values ('12번 게시물 제목입니다.', 4);
-insert into BOARD (boardtitle, member_id) values ('13번 게시물 제목입니다.', 5);
-insert into BOARD (boardtitle, member_id) values ('14번 게시물 제목입니다.', 5);
-insert into BOARD (boardtitle, member_id) values ('15번 게시물 제목입니다.', 7);
-insert into BOARD (boardtitle, member_id) values ('16번 게시물 제목입니다.', 7);
-insert into BOARD (boardtitle, member_id) values ('17번 게시물 제목입니다.', 10);
-insert into BOARD (boardtitle, member_id) values ('18번 게시물 제목입니다.', 10);
-insert into BOARD (boardtitle, member_id) values ('19번 게시물 제목입니다.', 10);
-insert into BOARD (boardtitle, member_id) values ('20번 게시물 제목입니다.', 12);
-insert into BOARD (boardtitle, member_id) values ('21번 게시물 제목입니다.', 12);
-insert into BOARD (boardtitle, member_id) values ('22번 게시물 제목입니다.', 12);
-insert into BOARD (boardtitle, member_id) values ('23번 게시물 제목입니다.', 12);
-insert into BOARD (boardtitle, member_id) values ('24번 게시물 제목입니다.', 12);
