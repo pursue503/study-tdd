@@ -15,6 +15,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import study.tdd.simpleboard.api.post.domain.enums.PostMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,7 +73,7 @@ public class PostCrudAcceptanceTest {
             when.then()
                     .statusCode(HttpStatus.OK.value())
                     .assertThat()
-                    .body("message", equalTo("게시물이 잘 저장되었습니다.")).log().all();
+                    .body("message", equalTo(PostMessage.SAVE_POST_SUCCESS.getSuccessMsg())).log().all();
 
         }
 
