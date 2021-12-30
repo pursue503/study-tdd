@@ -18,7 +18,10 @@ import java.beans.ConstructorProperties;
  * @since 0.0.1 dev
  */
 @Getter
-public class PostSaveRequestDTO {
+public class PostPatchRequestDTO {
+
+    @NotNull(message = "게시물을 수정하려면 게시물 번호를 함께 보내주셔야 합니다.")
+    private final Long postId;
 
     @NotNull(message = "게시물 제목이 반드시 전달되어야 합니다.")
     @NotEmpty(message = "게시물 제목이 비어 있으면 안됩니다.")
@@ -32,8 +35,9 @@ public class PostSaveRequestDTO {
 
     private final String image;
 
-    @ConstructorProperties({"postTitle", "postContent", "image"})
-    public PostSaveRequestDTO(String postTitle, String postContent, String image) {
+    @ConstructorProperties({ "postId", "postTitle", "postContent", "image"})
+    public PostPatchRequestDTO(Long postId, String postTitle, String postContent, String image) {
+        this.postId = postId;
         this.postTitle = postTitle == null ? null : postTitle.trim();
         this.postContent = postContent == null ? null : postContent.trim();
         this.image = image;
@@ -41,10 +45,10 @@ public class PostSaveRequestDTO {
 
     public Post toEntity() {
         return Post.builder()
+                .postId(getPostId())
                 .postTitle(getPostTitle())
                 .postContent(getPostContent())
                 .image(getImage())
                 .build();
-
     }
 }
