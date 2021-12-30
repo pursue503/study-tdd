@@ -60,7 +60,7 @@ public class MemberSignUpAcceptanceTest {
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .assertThat()
-                .body("message", equalTo("회원가입에 성공하였습니다.")).log().all();
+                .body("data", equalTo("회원가입에 성공하였습니다.")).log().all();
 
     }
 

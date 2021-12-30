@@ -69,7 +69,7 @@ public class PostServiceTest {
         // 실행, 검증
         assertThatThrownBy(() -> postRepository.save(wantToSave))
                 .isInstanceOf(BizException.class)
-                .hasMessageContaining("게시물 처리 요청이 실패했습니다.");
+                .hasMessageContaining(PostCrudErrorCode.POST_CRUD_FAIL.getMsg());
     }
 
     @Test
@@ -109,7 +109,7 @@ public class PostServiceTest {
         // 실행, 검증
         assertThatThrownBy(() -> postRepository.save(wantToSave))
                 .isInstanceOf(BizException.class)
-                .hasMessageContaining("게시물 처리 요청이 실패했습니다.");
+                .hasMessageContaining(PostCrudErrorCode.POST_CRUD_FAIL.getMsg());
     }
 
     @Test
@@ -152,7 +152,7 @@ public class PostServiceTest {
         // 검증
         assertThatThrownBy(() -> postService.findOnePost(-1L))
                 .isInstanceOf(BizException.class)
-                .hasMessageContaining("해당 게시물을 찾을 수 없습니다.");
+                .hasMessageContaining(PostCrudErrorCode.POST_NOT_FOUND.getMsg());
     }
 
     @Test
@@ -165,7 +165,7 @@ public class PostServiceTest {
         // 검증
         assertThatThrownBy(() -> postService.findOnePost(blockedPostId))
                 .isInstanceOf(BizException.class)
-                .hasMessageContaining("해당 게시물을 찾을 수 없습니다.");
+                .hasMessageContaining(PostCrudErrorCode.POST_NOT_FOUND.getMsg());
     }
 
     @Test
@@ -201,7 +201,7 @@ public class PostServiceTest {
         assertThatThrownBy(() -> postService.findPostsPage(invalidPage))
                 .isInstanceOf(BizException.class)
                 .describedAs("0쪽 이하의 페이지를 찾는 것은 금지되어 있습니다.")
-                .hasMessageContaining("해당 페이지를 찾을 수 없습니다.");
+                .hasMessageContaining(PostCrudErrorCode.PAGE_NOT_FOUND.getMsg());
     }
 
     @Test
