@@ -1,5 +1,7 @@
 package study.tdd.simpleboard.api.member.signup;
 
+import study.tdd.simpleboard.api.member.entity.Member;
+
 import java.util.ArrayList;
 import java.util.List;
 
