@@ -1,5 +1,7 @@
 package study.tdd.simpleboard.api.member.entity;
 
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +21,11 @@ public class Member {
     private String memberEmail;
     private String nickname;
     private String password;
+
+
+    @Builder
+    public Member(String memberEmail, String nickname, String password) {
+        this.memberEmail = memberEmail;
 
     public Member(String nickname, String password) {
         this.nickname = nickname;
