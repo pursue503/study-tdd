@@ -23,17 +23,17 @@ public class JWTTokenProvider {
     private final String subject;
 
     public JWTTokenProvider(
-            @Value("service.study.jwt.access-token-expiration-time")
-                    int accessTokenExpirationTime,
-            @Value("service.study.jwt.refresh-token-expiration-time")
-                    int refreshTokenExpirationTime,
-            @Value("service.study.jwt.secret-key")
+            @Value("${service.study.jwt.access-token-expiration-time}")
+                    Integer accessTokenExpirationTime,
+            @Value("${service.study.jwt.refresh-token-expiration-time}")
+                    Integer refreshTokenExpirationTime,
+            @Value("${service.study.jwt.secret-key}")
                     String secretKey,
-            @Value("service.study.jwt.claim-key")
+            @Value("${service.study.jwt.claim-key}")
                     String claimKey,
-            @Value("service.study.jwt.issuer")
+            @Value("${service.study.jwt.issuer}")
                     String issuer,
-            @Value("service.study.jwt.subject")
+            @Value("${service.study.jwt.subject}")
                     String subject
     ) {
         this.accessTokenExpirationTime = accessTokenExpirationTime;
