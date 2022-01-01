@@ -1,9 +1,14 @@
 package study.tdd.simpleboard.api;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import study.tdd.simpleboard.api.member.entity.MemberRepository;
+import study.tdd.simpleboard.config.JwtSecurityConfig;
+import study.tdd.simpleboard.util.JWTTokenProvider;
 
 /**
  * 보안 설정
@@ -13,8 +18,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * @since 2.6.1 spring boot
  * @since 0.0.1 dev
  */
+
+@RequiredArgsConstructor
 @Configuration
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class Security extends WebSecurityConfigurerAdapter {
+
+    private final JWTTokenProvider jwtTokenProvider;
+    private final MemberRepository memberRepository;
 
     @Override
     public void configure(WebSecurity web) {
@@ -24,8 +35,11 @@ public class Security extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+//                .antMatchers("/test/role_member").hasRole("USER")
+//                .antMatchers("/test/role_admin").hasRole("ADMIN")
                 .antMatchers("/").permitAll()
                 .antMatchers("/posts/**").permitAll();
+
 
         http.csrf()
                 .disable();
@@ -36,6 +50,9 @@ public class Security extends WebSecurityConfigurerAdapter {
 
         http.formLogin()
                 .disable();
+
+        http.apply(new JwtSecurityConfig(jwtTokenProvider, memberRepository));
+
     }
 
 
