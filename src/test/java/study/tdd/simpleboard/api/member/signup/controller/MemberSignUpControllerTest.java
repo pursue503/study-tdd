@@ -65,7 +65,7 @@ public class MemberSignUpControllerTest {
 
         // 검증
         actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("회원가입에 성공하였습니다."));
+                .andExpect(jsonPath("$.data").value("회원가입에 성공하였습니다."));
     }
 
     @ParameterizedTest

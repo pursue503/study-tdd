@@ -203,6 +203,6 @@ public class PostRepositoryTest {
         // 삭제 후 검증
         assertThatThrownBy(() -> postRepository.findById(saved.getPostId())
                                                .orElseThrow(() -> new BizException(PostCrudErrorCode.POST_NOT_FOUND)))
-        .hasMessageContaining("해당 게시물을 찾을 수 없습니다.");
+        .hasMessageContaining(PostCrudErrorCode.POST_NOT_FOUND.getMsg());
     }
 }

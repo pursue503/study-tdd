@@ -6,11 +6,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @Getter
-@RequiredArgsConstructor
 public class ResponseDTO<T> {
     private final T data;
     private final String message;
     private final HttpStatus httpStatus;
+
+    public ResponseDTO(T data, SuccessMessage message, HttpStatus httpStatus) {
+        this.data = data;
+        this.message = message.getSuccessMsg();
+        this.httpStatus = httpStatus;
+    }
 
     @Override
     public String toString() {

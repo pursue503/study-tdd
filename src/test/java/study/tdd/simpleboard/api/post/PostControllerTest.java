@@ -21,6 +21,7 @@ import study.tdd.simpleboard.api.post.controller.PostController;
 import study.tdd.simpleboard.api.post.controller.PostControllerAdvice;
 import study.tdd.simpleboard.api.post.domain.*;
 import study.tdd.simpleboard.api.post.domain.entity.Post;
+import study.tdd.simpleboard.api.post.domain.enums.PostMessage;
 import study.tdd.simpleboard.api.post.service.PostService;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
@@ -130,7 +131,7 @@ public class PostControllerTest {
 
             // 검증
             perform.andExpect(status().isOk())
-                    .andExpect(jsonPath("$.message").value("게시물이 잘 저장되었습니다."));
+                    .andExpect(jsonPath("$.message").value(PostMessage.SAVE_POST_SUCCESS.getSuccessMsg()));
         }
     }
 
@@ -193,7 +194,7 @@ public class PostControllerTest {
 
             // 검증
             perform.andExpect(status().isOk())
-                    .andExpect(jsonPath("$.message").value("게시물이 잘 저장되었습니다."));
+                    .andExpect(jsonPath("$.message").value(PostMessage.SAVE_POST_SUCCESS.getSuccessMsg()));
         }
 
 
@@ -216,7 +217,7 @@ public class PostControllerTest {
 
             // 검증
             perform.andExpect(status().isOk())
-                    .andExpect(jsonPath("$.message").value("게시물이 잘 저장되었습니다."));
+                    .andExpect(jsonPath("$.message").value(PostMessage.SAVE_POST_SUCCESS.getSuccessMsg()));
 
             verify(postService, atLeastOnce()).savePost(refEq(requestedPostSave));
         }
@@ -234,7 +235,7 @@ public class PostControllerTest {
                         .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.postTitle").value("찾으시는 게시물의 제목"))
-                .andExpect(jsonPath("$.message").value("게시물이 잘 조회되었습니다."));
+                .andExpect(jsonPath("$.message").value(PostMessage.FIND_POST_ONE_SUCCESS.getSuccessMsg()));
     }
 
     @Test
@@ -339,7 +340,7 @@ public class PostControllerTest {
         mockmvc.perform(delete("/posts/1")
                         .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("게시물이 삭제되었습니다."));
+                .andExpect(jsonPath("$.message").value(PostMessage.DELETE_POST_SUCCESS.getSuccessMsg()));
 
         // 검증
         verify(postService, atLeastOnce()).deleteOnePost(1L);
