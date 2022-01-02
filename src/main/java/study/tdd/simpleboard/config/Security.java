@@ -6,7 +6,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import study.tdd.simpleboard.api.member.entity.MemberRepository;
+import study.tdd.simpleboard.filter.JWTFilter;
 import study.tdd.simpleboard.util.JWTProvider;
 
 /**
@@ -28,6 +30,7 @@ import study.tdd.simpleboard.util.JWTProvider;
 public class Security extends WebSecurityConfigurerAdapter {
 
     private final JWTProvider jwtProvider;
+    private final JWTFilter jwtFilter;
     private final MemberRepository memberRepository;
 
     @Override
@@ -54,8 +57,8 @@ public class Security extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .disable();
 
-        http.apply(new JwtSecurityConfig(jwtProvider, memberRepository));
-
+//        http.apply(new JwtSecurityConfig(jwtProvider, memberRepository));
+        http.addFilterBefore(new JWTFilter(jwtProvider, memberRepository), UsernamePasswordAuthenticationFilter.class);
     }
 
 
