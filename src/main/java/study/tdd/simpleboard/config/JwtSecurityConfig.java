@@ -14,13 +14,13 @@ import study.tdd.simpleboard.util.JWTProvider;
  */
 @RequiredArgsConstructor
 public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
-//    private final JWTProvider jwtProvider;
-//    private final MemberRepository memberRepository;
-//
-//    @Override
-//    public void configure(HttpSecurity builder) {
-//        JWTFilter jwtFilter = new JWTFilter(jwtProvider, memberRepository);
-//
-//        builder.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-//    }
+    private final JWTProvider jwtProvider;
+    private final MemberRepository memberRepository;
+
+    @Override
+    public void configure(HttpSecurity builder) {
+        JWTFilter jwtFilter = new JWTFilter(jwtProvider, memberRepository);
+
+        builder.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+    }
 }

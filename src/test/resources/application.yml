@@ -21,4 +21,12 @@ spring:
         format_sql: true
         show_sql: true
 
-
+service:
+  study:
+    jwt:
+      secret-key: study-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-key
+      access-token-expiration-time: 1800000
+      refresh-token-expiration-time: 604800000
+      claim-key: member-id
+      issuer: study-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-key
+      subject: study-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-keystudy-test-secret-key

@@ -2,6 +2,7 @@ package study.tdd.simpleboard.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -26,12 +27,9 @@ import study.tdd.simpleboard.util.JWTProvider;
 
 @RequiredArgsConstructor
 @Configuration
+@Order(1)
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class Security extends WebSecurityConfigurerAdapter {
-
-    private final JWTProvider jwtProvider;
-    private final JWTFilter jwtFilter;
-    private final MemberRepository memberRepository;
 
     @Override
     public void configure(WebSecurity web) {
@@ -56,9 +54,6 @@ public class Security extends WebSecurityConfigurerAdapter {
 
         http.formLogin()
                 .disable();
-
-//        http.apply(new JwtSecurityConfig(jwtProvider, memberRepository));
-        http.addFilterBefore(new JWTFilter(jwtProvider, memberRepository), UsernamePasswordAuthenticationFilter.class);
     }
 
 

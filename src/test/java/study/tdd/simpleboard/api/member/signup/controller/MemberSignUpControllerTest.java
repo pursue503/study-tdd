@@ -1,28 +1,21 @@
 package study.tdd.simpleboard.api.member.signup.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
-import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import study.tdd.simpleboard.api.member.entity.MemberRepository;
 import study.tdd.simpleboard.api.member.signup.service.MemberSignUpService;
-import study.tdd.simpleboard.config.Security;
+import study.tdd.simpleboard.config.FilterConfig;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.member.signup.MemberSignUpErrorCode;
-import study.tdd.simpleboard.filter.JWTFilter;
-import study.tdd.simpleboard.util.JWTProvider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WebMvcTest(MemberSignUpController.class)
+@WebMvcTest(value = MemberSignUpController.class, excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = FilterConfig.class)})
 public class MemberSignUpControllerTest {
 
     @Autowired
