@@ -1,4 +1,4 @@
-package study.tdd.simpleboard.api;
+package study.tdd.simpleboard.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -7,8 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import study.tdd.simpleboard.api.member.entity.MemberRepository;
-import study.tdd.simpleboard.config.JwtSecurityConfig;
-import study.tdd.simpleboard.util.JWTTokenProvider;
+import study.tdd.simpleboard.util.JWTProvider;
 
 /**
  * 보안 설정
@@ -17,6 +16,10 @@ import study.tdd.simpleboard.util.JWTTokenProvider;
  * @create 2021-12-23
  * @since 2.6.1 spring boot
  * @since 0.0.1 dev
+ *
+ * @author pursue503
+ * @update JWT Security Filter 설정 추가
+ *
  */
 
 @RequiredArgsConstructor
@@ -24,7 +27,7 @@ import study.tdd.simpleboard.util.JWTTokenProvider;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class Security extends WebSecurityConfigurerAdapter {
 
-    private final JWTTokenProvider jwtTokenProvider;
+    private final JWTProvider jwtProvider;
     private final MemberRepository memberRepository;
 
     @Override
@@ -51,7 +54,7 @@ public class Security extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 .disable();
 
-        http.apply(new JwtSecurityConfig(jwtTokenProvider, memberRepository));
+        http.apply(new JwtSecurityConfig(jwtProvider, memberRepository));
 
     }
 

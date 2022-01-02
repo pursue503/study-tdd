@@ -7,15 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.member.entity.MemberRepository;
 import study.tdd.simpleboard.custom.UserCustom;
-import study.tdd.simpleboard.util.JWTTokenProvider;
+import study.tdd.simpleboard.util.JWTProvider;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -30,7 +28,7 @@ import java.util.List;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final String ACCESS_TOKEN_HEADER = "ACCESS-TOKEN";
-    private final JWTTokenProvider jwtTokenProvider;
+    private final JWTProvider jwtProvider;
     private final MemberRepository memberRepository;
 
     @Override
@@ -39,9 +37,8 @@ public class JWTFilter extends OncePerRequestFilter {
         String accessToken = getAccessToken(request);
 
         if (!ObjectUtils.isEmpty(accessToken)) {
-            Long memberId = Long.parseLong(jwtTokenProvider.verifyAccessToken(accessToken));
+            Long memberId = Long.parseLong(jwtProvider.verifyAccessToken(accessToken));
 
-            log.info(memberId.toString());
             Authentication authentication = getAuthentication(memberId);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

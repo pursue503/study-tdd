@@ -13,7 +13,7 @@ import java.security.Key;
 import java.util.Date;
 
 @Component
-public class JWTTokenProvider {
+public class JWTProvider {
 
     private final int accessTokenExpirationTime;
     private final int refreshTokenExpirationTime;
@@ -22,7 +22,7 @@ public class JWTTokenProvider {
     private final String issuer;
     private final String subject;
 
-    public JWTTokenProvider(
+    public JWTProvider(
             @Value("${service.study.jwt.access-token-expiration-time}")
                     Integer accessTokenExpirationTime,
             @Value("${service.study.jwt.refresh-token-expiration-time}")

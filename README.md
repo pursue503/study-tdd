@@ -104,9 +104,9 @@ code with me 를 활용하여 어렵거나 힘든 기능을
   - [x] 특수문자 하나이상 포함
   - [x] 숫자 하나이상 포함
 - [x] 닉네임 중복 체크 #checkDuplicatedNickname(String nickname)
-- [ ] 로그인 검사 - JWT (인터셉터)
-  - [ ] 토큰 디코딩(복호화) JwtUtil#decode(String token)
-  - [ ] 토큰 검증 JwtUtil#validateAccessToken(String token),
+- [x] 로그인 검사 - JWT (필터)
+  - [x] 토큰 디코딩(복호화) JwtUtil#decode(String token)
+  - [x] 토큰 검증 JwtUtil#validateAccessToken(String token),
     JwtUtil#validateRefreshToken
     - [ ] 유효하지 않은 액세스 토큰일 경우 "유효하지 않은 액세스 토큰이 전달되었습니다."(401 Unauthorized, *-1) 메시지를 보내주기
     - [ ] 토큰 만료시 "만료된 액세스 토큰입니다. 리프레시토큰으로 재요청해주세요."(401 Unauthorized, *-2) 메시지를 보내주기
