@@ -3,11 +3,11 @@ package study.tdd.simpleboard.api.member.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -21,11 +21,26 @@ public class Member {
     private String nickname;
     private String password;
 
-    @Builder
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "member")
+    private List<MemberRole> memberRoleList = new ArrayList<>();
+
     public Member(String memberEmail, String nickname, String password) {
         this.memberEmail = memberEmail;
         this.nickname = nickname;
         this.password = password;
     }
 
+    @Builder
+    public Member(String memberEmail, String nickname, String password, Role memberRole) {
+        this.memberEmail = memberEmail;
+        this.nickname = nickname;
+        this.password = password;
+        this.memberRoleList.add(
+                MemberRole.builder()
+                        .role(memberRole)
+                        .member(this)
+                        .build()
+        );
+    }
 }

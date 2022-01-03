@@ -10,6 +10,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,6 +25,7 @@ import study.tdd.simpleboard.api.post.domain.*;
 import study.tdd.simpleboard.api.post.domain.entity.Post;
 import study.tdd.simpleboard.api.post.domain.enums.PostMessage;
 import study.tdd.simpleboard.api.post.service.PostService;
+import study.tdd.simpleboard.config.FilterConfig;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 
@@ -43,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // @SpringBootTest(properties = "spring.profiles.activetest")
 // @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 // @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL) // @since SpringBoot 2.2
-@WebMvcTest(PostController.class)
+@WebMvcTest(value = PostController.class, excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = FilterConfig.class)}, excludeAutoConfiguration = {ComponentScan.Filter.class})
 public class PostControllerTest {
 
     private MockMvc mockmvc;

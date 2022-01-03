@@ -2,8 +2,11 @@ package study.tdd.simpleboard.api.member.signup.dto;
 
 import lombok.*;
 import study.tdd.simpleboard.api.member.entity.Member;
+import study.tdd.simpleboard.api.member.entity.MemberRole;
+import study.tdd.simpleboard.api.member.entity.Role;
 
 import java.beans.ConstructorProperties;
+import java.util.ArrayList;
 
 /**
  * 회원가입을 위한 데이터들을 담아줄 DTO
@@ -28,6 +31,7 @@ public class MemberSignUpRequestDTO {
                 .nickname(nickname)
                 .password(password)
                 .memberEmail(memberEmail)
+                .memberRole(Role.MEMBER)
                 .build();
     }
 
