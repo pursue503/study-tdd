@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -51,10 +52,9 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     private Authentication getAuthentication(Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(NullPointerException::new);
+        Member member = memberRepository.findByMemberAllData(memberId).orElseThrow(NullPointerException::new);
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        List<GrantedAuthority> authorities = member.getMemberRoleList().stream().map(entity -> new SimpleGrantedAuthority(entity.getRole().getRole())).collect(Collectors.toList());
         UserDetails userDetails = new UserCustom(member, authorities);
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
