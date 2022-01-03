@@ -54,7 +54,10 @@ public class JWTFilter extends OncePerRequestFilter {
     private Authentication getAuthentication(Long memberId) {
         Member member = memberRepository.findByMemberAllData(memberId).orElseThrow(NullPointerException::new);
 
-        List<GrantedAuthority> authorities = member.getMemberRoleList().stream().map(entity -> new SimpleGrantedAuthority(entity.getRole().getRole())).collect(Collectors.toList());
+        List<GrantedAuthority> authorities = member.getMemberRoleList()
+                                                    .stream()
+                                                    .map(entity -> new SimpleGrantedAuthority(entity.getRole().getRole()))
+                                                    .collect(Collectors.toList());
         UserDetails userDetails = new UserCustom(member, authorities);
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
