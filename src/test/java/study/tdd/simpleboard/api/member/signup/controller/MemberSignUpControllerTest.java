@@ -7,12 +7,17 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import study.tdd.simpleboard.api.common.BaseTest;
+import study.tdd.simpleboard.api.member.entity.MemberRepository;
 import study.tdd.simpleboard.api.member.signup.service.MemberSignUpService;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.member.signup.MemberSignUpErrorCode;
+import study.tdd.simpleboard.util.JWTProvider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WebMvcTest(MemberSignUpController.class)
-public class MemberSignUpControllerTest {
+@WebMvcTest(value = MemberSignUpController.class, excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE)})
+public class MemberSignUpControllerTest extends BaseTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -35,6 +40,8 @@ public class MemberSignUpControllerTest {
 
     @MockBean
     MemberSignUpService memberSignUpService;
+
+
 
     @ParameterizedTest
     @CsvSource(value = {"nickname1234:abcd1234!A:pursue503@naver.com"}, delimiterString = ":")

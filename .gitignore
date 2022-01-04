@@ -35,4 +35,6 @@ out/
 ### VS Code ###
 .vscode/
 
-application-jwt.yml
+
+### Application ###
+src/main/resources/application-jwt.yml

@@ -10,12 +10,15 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import study.tdd.simpleboard.api.common.BaseTest;
 import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.post.controller.PostController;
 import study.tdd.simpleboard.api.post.controller.PostControllerAdvice;
@@ -43,8 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // @SpringBootTest(properties = "spring.profiles.activetest")
 // @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 // @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL) // @since SpringBoot 2.2
-@WebMvcTest(PostController.class)
-public class PostControllerTest {
+@WebMvcTest(value = PostController.class)
+public class PostControllerTest extends BaseTest {
 
     private MockMvc mockmvc;
 
