@@ -2,19 +2,25 @@ package study.tdd.simpleboard.api.post;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import study.tdd.simpleboard.api.post.domain.enums.PostMessage;
 
 import java.util.HashMap;
@@ -23,6 +29,8 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
+import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
 /**
  * 게시물 CRUD 인수 테스트
@@ -33,6 +41,8 @@ import static org.hamcrest.Matchers.equalTo;
  * @since 0.0.2 dev
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
+@AutoConfigureRestDocs
 public class PostCrudAcceptanceTest {
 
     @LocalServerPort
@@ -41,41 +51,51 @@ public class PostCrudAcceptanceTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    private RequestSpecification spec;
+
+//    @RegisterExtension
+//    private final RestDocumentationExtension restDocumentation = ;
+
     @BeforeEach
-    void setUp() {
+    void setUp(RestDocumentationContextProvider restDocumentation) {
         RestAssured.port = port;
+        this.spec = new RequestSpecBuilder().addFilter(
+                        documentationConfiguration(restDocumentation))
+                .build();
+    }
+
+    @Test
+    @DisplayName("게시물 저장 성공")
+    void savePostSuccess() {
+
+        // 준비
+        Map<String, Object> body = new HashMap<>();
+        body.put("postTitle", "게시물 제목 저장");
+        body.put("postContent", "게시물 내용 저장");
+        body.put("image", "/image.png");
+
+        RequestSpecification given = given(this.spec)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(ContentType.JSON)
+                .filter(document("post"))
+                .body(body).log().all();
+
+        // 실행
+        Response when = given.when()
+                .post("/posts");
+
+        // 검증
+        when.then()
+                .statusCode(HttpStatus.OK.value())
+                .assertThat()
+                .body("message", equalTo(PostMessage.SAVE_POST_SUCCESS.getSuccessMsg())).log().all();
+
     }
 
     @Nested
     @DisplayName("게시물 저장 인수 테스트")
     class SavePostTest {
 
-        @Test
-        @DisplayName("게시물 저장 성공")
-        void savePostSuccess() {
-
-            // 준비
-            Map<String, Object> body = new HashMap<>();
-            body.put("postTitle", "게시물 제목 저장");
-            body.put("postContent", "게시물 내용 저장");
-            body.put("image", "/image.png");
-
-            RequestSpecification given = given()
-                    .accept(MediaType.APPLICATION_JSON_VALUE)
-                    .contentType(ContentType.JSON)
-                    .body(body).log().all();
-
-            // 실행
-            Response when = given.when()
-                    .post("/posts");
-
-            // 검증
-            when.then()
-                    .statusCode(HttpStatus.OK.value())
-                    .assertThat()
-                    .body("message", equalTo(PostMessage.SAVE_POST_SUCCESS.getSuccessMsg())).log().all();
-
-        }
 
         @ParameterizedTest
         @CsvSource(value = {":게시물 내용:", "   :게시물 내용:/image.png",
@@ -89,7 +109,7 @@ public class PostCrudAcceptanceTest {
             body.put("postContent", postContent);
             body.put("image", image);
 
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
                     .body(body).log().all();
