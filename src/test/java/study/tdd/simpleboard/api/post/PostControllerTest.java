@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import study.tdd.simpleboard.api.common.BaseTest;
 import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.post.controller.PostController;
 import study.tdd.simpleboard.api.post.controller.PostControllerAdvice;
@@ -25,7 +26,6 @@ import study.tdd.simpleboard.api.post.domain.*;
 import study.tdd.simpleboard.api.post.domain.entity.Post;
 import study.tdd.simpleboard.api.post.domain.enums.PostMessage;
 import study.tdd.simpleboard.api.post.service.PostService;
-import study.tdd.simpleboard.config.FilterConfig;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 
@@ -46,8 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // @SpringBootTest(properties = "spring.profiles.activetest")
 // @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 // @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL) // @since SpringBoot 2.2
-@WebMvcTest(value = PostController.class, excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = FilterConfig.class)}, excludeAutoConfiguration = {ComponentScan.Filter.class})
-public class PostControllerTest {
+@WebMvcTest(value = PostController.class)
+public class PostControllerTest extends BaseTest {
 
     private MockMvc mockmvc;
 
