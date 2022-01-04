@@ -64,38 +64,39 @@ public class PostCrudAcceptanceTest {
                 .build();
     }
 
-    @Test
-    @DisplayName("게시물 저장 성공")
-    void savePostSuccess() {
 
-        // 준비
-        Map<String, Object> body = new HashMap<>();
-        body.put("postTitle", "게시물 제목 저장");
-        body.put("postContent", "게시물 내용 저장");
-        body.put("image", "/image.png");
-
-        RequestSpecification given = given(this.spec)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(ContentType.JSON)
-                .filter(document("post"))
-                .body(body).log().all();
-
-        // 실행
-        Response when = given.when()
-                .post("/posts");
-
-        // 검증
-        when.then()
-                .statusCode(HttpStatus.OK.value())
-                .assertThat()
-                .body("message", equalTo(PostMessage.SAVE_POST_SUCCESS.getSuccessMsg())).log().all();
-
-    }
 
     @Nested
     @DisplayName("게시물 저장 인수 테스트")
     class SavePostTest {
 
+        @Test
+        @DisplayName("게시물 저장 성공")
+        void savePostSuccess() {
+
+            // 준비
+            Map<String, Object> body = new HashMap<>();
+            body.put("postTitle", "게시물 제목 저장");
+            body.put("postContent", "게시물 내용 저장");
+            body.put("image", "/image.png");
+
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
+                    .accept(MediaType.APPLICATION_JSON_VALUE)
+                    .contentType(ContentType.JSON)
+                    .filter(document("post"))
+                    .body(body).log().all();
+
+            // 실행
+            Response when = given.when()
+                    .post("/posts");
+
+            // 검증
+            when.then()
+                    .statusCode(HttpStatus.OK.value())
+                    .assertThat()
+                    .body("message", equalTo(PostMessage.SAVE_POST_SUCCESS.getSuccessMsg())).log().all();
+
+        }
 
         @ParameterizedTest
         @CsvSource(value = {":게시물 내용:", "   :게시물 내용:/image.png",
@@ -164,7 +165,7 @@ public class PostCrudAcceptanceTest {
             body.put("postContent", postContent);
             body.put("image", image);
 
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
                     .body(body).log().all();
@@ -193,7 +194,7 @@ public class PostCrudAcceptanceTest {
             @DisplayName("게시물 단건 조회 성공")
             void findOnePostSuccess() {
                 // 준비
-                RequestSpecification given = given()
+                RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(ContentType.JSON)
                         .log().all();
@@ -213,7 +214,7 @@ public class PostCrudAcceptanceTest {
             @DisplayName("게시물 단건 조회 실패 - 음수값을 가진 게시물 아이디 또는 BLOCK 처리된 게시물, 삭제된 게시물 등")
             void findOnePostFailure(Long postId) {
                 // 준비
-                RequestSpecification given = given()
+                RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(ContentType.JSON)
                         .log().all();
@@ -238,7 +239,7 @@ public class PostCrudAcceptanceTest {
             @DisplayName("게시물 페이징 조회 성공")
             void findOnePostSuccess() {
                 // 준비
-                RequestSpecification given = given()
+                RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(ContentType.JSON)
                         .param("page", 1).log().all();
@@ -258,7 +259,7 @@ public class PostCrudAcceptanceTest {
             @DisplayName("게시물 페이징 조회 실패 - 음수값을 가진 페이지 또는 페이지 수 초과")
             void findOnePostFailure(int requestedPageNumber) {
                 // 준비
-                RequestSpecification given = given()
+                RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(ContentType.JSON)
                         .param("page", requestedPageNumber).log().all();
@@ -289,7 +290,7 @@ public class PostCrudAcceptanceTest {
             body.put("postContent", "수정된 3번 게시물의 내용입니다.");
             body.put("image", "/newImage.png");
 
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
                     .body(body).log().all();
@@ -315,7 +316,7 @@ public class PostCrudAcceptanceTest {
             body.put("postContent", "수정된 N번 게시물의 내용입니다.");
             body.put("image", "/newImage.png");
 
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
                     .body(body).log().all();
@@ -340,7 +341,7 @@ public class PostCrudAcceptanceTest {
         @DisplayName("게시물 삭제 성공")
         void deleteOnePostSuccess() {
             // 준비
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
                     .log().all();
@@ -360,7 +361,7 @@ public class PostCrudAcceptanceTest {
         @DisplayName("게시물 삭제 실패 - 없는 게시물 번호, 또는 BLOCK 된 게시물")
         void deleteOnePostFailure(Long postId) {
             // 준비
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
                     .log().all();
