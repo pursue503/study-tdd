@@ -33,9 +33,10 @@ public class JWTFilter extends OncePerRequestFilter {
     private final JWTProvider jwtProvider;
     private final MemberRepository memberRepository;
 
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         String accessToken = getAccessToken(request);
 
         if (!ObjectUtils.isEmpty(accessToken)) {
@@ -44,6 +45,8 @@ public class JWTFilter extends OncePerRequestFilter {
             Authentication authentication = getAuthentication(memberId);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+
+
         filterChain.doFilter(request, response);
     }
 

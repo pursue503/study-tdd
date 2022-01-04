@@ -1,0 +1,19 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 게시글 작성 하기
+
+== Request
+
+CURL:
+include::{snippets}/post/curl-request.adoc[]
+
+=== Request HTTP Example:
+include::{snippets}/post/http-request.adoc[]
+
+=== Request Body:
+include::{snippets}/post/request-body.adoc[]
+
+=== Response
+include::{snippets}/post/http-response.adoc[]
