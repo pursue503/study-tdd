@@ -31,6 +31,9 @@ import study.tdd.simpleboard.util.JWTProvider;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class Security extends WebSecurityConfigurerAdapter {
 
+    private final JWTProvider jwtProvider;
+    private final MemberRepository memberRepository;
+
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().mvcMatchers("/h2-console/**");
@@ -54,6 +57,8 @@ public class Security extends WebSecurityConfigurerAdapter {
 
         http.formLogin()
                 .disable();
+        http.apply(new JwtSecurityConfig(jwtProvider, memberRepository));
+
     }
 
 
