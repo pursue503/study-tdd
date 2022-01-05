@@ -7,6 +7,10 @@ spring:
         web-allow-others: true
         trace: false
 
+  profiles:
+    include:
+      - jwt # jwt token
+
   datasource:
     url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1
     username: sa

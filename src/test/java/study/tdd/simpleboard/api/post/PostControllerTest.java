@@ -10,17 +10,21 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import study.tdd.simpleboard.api.common.BaseTest;
 import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.post.controller.PostController;
 import study.tdd.simpleboard.api.post.controller.PostControllerAdvice;
 import study.tdd.simpleboard.api.post.domain.*;
 import study.tdd.simpleboard.api.post.domain.entity.Post;
+import study.tdd.simpleboard.api.post.domain.enums.PostMessage;
 import study.tdd.simpleboard.api.post.service.PostService;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
@@ -42,8 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // @SpringBootTest(properties = "spring.profiles.activetest")
 // @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 // @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL) // @since SpringBoot 2.2
-@WebMvcTest(PostController.class)
-public class PostControllerTest {
+@WebMvcTest(value = PostController.class)
+public class PostControllerTest extends BaseTest {
 
     private MockMvc mockmvc;
 
@@ -130,7 +134,7 @@ public class PostControllerTest {
 
             // 검증
             perform.andExpect(status().isOk())
-                    .andExpect(jsonPath("$.message").value("게시물이 잘 저장되었습니다."));
+                    .andExpect(jsonPath("$.message").value(PostMessage.SAVE_POST_SUCCESS.getSuccessMsg()));
         }
     }
 
@@ -193,7 +197,7 @@ public class PostControllerTest {
 
             // 검증
             perform.andExpect(status().isOk())
-                    .andExpect(jsonPath("$.message").value("게시물이 잘 저장되었습니다."));
+                    .andExpect(jsonPath("$.message").value(PostMessage.SAVE_POST_SUCCESS.getSuccessMsg()));
         }
 
 
@@ -216,7 +220,7 @@ public class PostControllerTest {
 
             // 검증
             perform.andExpect(status().isOk())
-                    .andExpect(jsonPath("$.message").value("게시물이 잘 저장되었습니다."));
+                    .andExpect(jsonPath("$.message").value(PostMessage.SAVE_POST_SUCCESS.getSuccessMsg()));
 
             verify(postService, atLeastOnce()).savePost(refEq(requestedPostSave));
         }
@@ -234,7 +238,7 @@ public class PostControllerTest {
                         .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.postTitle").value("찾으시는 게시물의 제목"))
-                .andExpect(jsonPath("$.message").value("게시물이 잘 조회되었습니다."));
+                .andExpect(jsonPath("$.message").value(PostMessage.FIND_POST_ONE_SUCCESS.getSuccessMsg()));
     }
 
     @Test
@@ -339,7 +343,7 @@ public class PostControllerTest {
         mockmvc.perform(delete("/posts/1")
                         .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("게시물이 삭제되었습니다."));
+                .andExpect(jsonPath("$.message").value(PostMessage.DELETE_POST_SUCCESS.getSuccessMsg()));
 
         // 검증
         verify(postService, atLeastOnce()).deleteOnePost(1L);
