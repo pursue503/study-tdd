@@ -1,0 +1,15 @@
+insert into MEMBER (member_id, member_email, nickname, password) values (1, 'a1@naver.com', 'aMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (2, 'b1@naver.com', 'bMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (3, 'aa@naver.com', 'cMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (4, 'bb@naver.com', 'dMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (5, 'cc@naver.com', 'eMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (6, 'dd@naver.com', 'fMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (7, 'ee@naver.com', 'gMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (8, 'ff@naver.com', 'hMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (9, 'gg@naver.com', 'iMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (10, 'hh@naver.com', 'jMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (11, 'ii@naver.com', 'kMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (12, 'jj@naver.com', 'lMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (13, 'kk@naver.com', 'mMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (14, 'mm@naver.com', 'nMemberNickName', 'password1234');
+insert into MEMBER (member_id, member_email, nickname, password) values (15, 'pp@naver.com', 'oMemberNickName', 'password1234');
