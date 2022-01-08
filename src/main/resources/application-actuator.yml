@@ -1,0 +1,16 @@
+management:
+  endpoints:
+    web:
+      # base-path: /manage # change base path: /actuator to /manage
+      exposure:
+        include: health, info, beans, conditions, threaddump, heapdump, auditevents, configprop, env, httptrace, loggers, mappings, metrics, scheduledtasks, auditevents
+  health:
+    db:
+      enabled: true
+    elasticsearch:
+      enabled: true
+
+info:
+  contact:
+    email: find1086@gmail.com
+    phone: +82 10-4609-1935
