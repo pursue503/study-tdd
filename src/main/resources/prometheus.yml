@@ -1,0 +1,12 @@
+global:
+  scrape_interval:     10s
+
+scrape_configs:
+  - job_name: 'spring--app'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+
+# how to run? example 1:
+# docker pull prometheus
+# docker run -p 9090:9090 -v prometheus.yml(this file) prom/prometheus
