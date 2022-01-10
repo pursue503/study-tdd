@@ -8,16 +8,22 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.aop.AopAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockBeans;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import study.tdd.simpleboard.aop.BindingResultAop;
 import study.tdd.simpleboard.api.common.BaseTest;
 import study.tdd.simpleboard.api.member.entity.Member;
 import study.tdd.simpleboard.api.post.controller.PostController;
@@ -29,6 +35,7 @@ import study.tdd.simpleboard.api.post.service.PostService;
 import study.tdd.simpleboard.exception.common.BizException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -46,9 +53,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 // @SpringBootTest(properties = "spring.profiles.activetest")
 // @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 // @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL) // @since SpringBoot 2.2
-@WebMvcTest(value = PostController.class)
+@Import({AopAutoConfiguration.class, BindingResultAop.class})
+@WebMvcTest(controllers = {PostController.class, PostControllerAdvice.class})
 public class PostControllerTest extends BaseTest {
 
+    @Autowired
     private MockMvc mockmvc;
 
     @MockBean
@@ -56,15 +65,6 @@ public class PostControllerTest extends BaseTest {
 
     @Autowired
     ObjectMapper mapper;
-
-    @BeforeEach
-    public void setUp() {
-        PostController postController = new PostController(postService);
-        mockmvc = MockMvcBuilders.standaloneSetup(postController)
-                .addFilters(new CharacterEncodingFilter("UTF-8", true))
-                .setControllerAdvice(new PostControllerAdvice())
-                .build();
-    }
 
     @Nested
     @DisplayName("게시물 저장 테스트: 제목 매개변수 검증")
@@ -78,7 +78,8 @@ public class PostControllerTest extends BaseTest {
 
             // 검증
             perform.andDo(print())
-                    .andExpect(status().isBadRequest());
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.message").value("필수 항목이 모두 비어있습니다."));
         }
 
         @ParameterizedTest
@@ -101,7 +102,7 @@ public class PostControllerTest extends BaseTest {
 
         @Test
         @DisplayName("게시물 제목이 30글자를 초과하여 올 경우 400 에러 반환")
-        void whenPostTitleExceeds30Letters() throws Exception {
+        void whenPostTitleExceeds30Letters() throws Exception, Throwable {
 
             // 준비
             Map<String, String> content = new HashMap<>();
@@ -112,7 +113,8 @@ public class PostControllerTest extends BaseTest {
             // 실행
             ResultActions perform = mockmvc.perform(post("/posts")
                     .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8")
-                    .content(mapper.writeValueAsString(content)));
+                    .content(mapper.writeValueAsString(content))
+            );
 
             // 검증
             perform.andExpect(status().isBadRequest());
@@ -243,15 +245,16 @@ public class PostControllerTest extends BaseTest {
 
     @Test
     @DisplayName("게시물 1개 조회 실패 - 없는 게시물 (주의: 정책상 block 처리된 게시물도 없는 게시물 취급) ")
-    public void findOnePostFailure() {
+    public void findOnePostFailure() throws Exception {
         // 준비
         given(postService.findOnePost(-1L)).willThrow(new BizException(PostCrudErrorCode.POST_NOT_FOUND));
 
         // 실행 및 검증
-        assertThatThrownBy(() -> mockmvc.perform(get("/posts/-1")
+        mockmvc.perform(get("/posts/-1")
                         .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8"))
-                .andExpect(status().isBadRequest()))
-                .hasMessageContaining("해당 게시물을 찾을 수 없습니다.");
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value(PostCrudErrorCode.POST_NOT_FOUND.getMsg()));
+
     }
 
     @Test
@@ -277,17 +280,17 @@ public class PostControllerTest extends BaseTest {
     @ParameterizedTest
     @ValueSource(ints = { -1, 999999 })
     @DisplayName("게시물 페이지 조회 실패 - 찾는 페이지가 음의 정수이거나 페이지를 초과하는 경우")
-    public void findPostPageFailure(int page) {
+    public void findPostPageFailure(int page) throws Exception {
         // 준비
         given(postService.findPostsPage(page)).willThrow(new BizException(PostCrudErrorCode.PAGE_NOT_FOUND));
 
         // 실행 및 검증
-        assertThatThrownBy(() -> mockmvc.perform(get("/posts")
+        mockmvc.perform(get("/posts")
                         .param("page", String.valueOf(page)))
-                .andExpect(status().isBadRequest()))
-                .hasMessageContaining("해당 페이지를 찾을 수 없습니다.");
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value(PostCrudErrorCode.PAGE_NOT_FOUND.getMsg()));
 
-        verify(postService, atLeastOnce()).findPostsPage(page);
+//        verify(postService, atLeastOnce()).findPostsPage(page);
     }
 
     @Test
