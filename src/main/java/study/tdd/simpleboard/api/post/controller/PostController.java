@@ -39,9 +39,6 @@ public class PostController {
      */
     @PostMapping("/posts")
     public ResponseDTO<Long> savePost(@Valid @RequestBody PostSaveRequestDTO dto, BindingResult result) {
-        if (result.hasErrors()) {
-            throw new InvalidPostParameterException(result, PostCrudErrorCode.POST_CRUD_FAIL);
-        }
         return new ResponseDTO<>(postService.savePost(dto), PostMessage.SAVE_POST_SUCCESS, HttpStatus.OK);
     }
 
@@ -57,9 +54,6 @@ public class PostController {
 
     @PatchMapping("/posts")
     public ResponseDTO<UpdatedPostDTO> updateOnePost(@Valid @RequestBody PostPatchRequestDTO dto, BindingResult result) {
-        if (result.hasErrors()) {
-            throw new InvalidPostParameterException(result, PostCrudErrorCode.POST_CRUD_FAIL);
-        }
         return new ResponseDTO<>(postService.updateOnePost(dto), PostMessage.UPDATE_POST_SUCCESS, HttpStatus.OK);
     }
 
