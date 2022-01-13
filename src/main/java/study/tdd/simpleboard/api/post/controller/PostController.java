@@ -9,6 +9,8 @@ import study.tdd.simpleboard.api.common.ResponseDTO;
 import study.tdd.simpleboard.api.post.domain.*;
 import study.tdd.simpleboard.api.post.domain.enums.PostMessage;
 import study.tdd.simpleboard.api.post.service.PostService;
+import study.tdd.simpleboard.exception.common.BizException;
+import study.tdd.simpleboard.exception.member.signup.MemberSignUpErrorCode;
 import study.tdd.simpleboard.exception.post.InvalidPostParameterException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 
@@ -34,11 +36,10 @@ public class PostController {
      * 게시물 저장 요청을 받아 저장 처리후 반환값으로 저장된 게시물의 postId를 반환합니다.
      *
      * @param dto    게시물 제목, 게시물 내용, 이미지 주소 (선택사항)
-     * @param result 제목 및 내용에 대한 규칙 검증 결과
      * @return 성공적으로 저장된 게시물의 고유 아이디
      */
     @PostMapping("/posts")
-    public ResponseDTO<Long> savePost(@Valid @RequestBody PostSaveRequestDTO dto, BindingResult result) {
+    public ResponseDTO<Long> savePost(@Valid @RequestBody PostSaveRequestDTO dto) {
         return new ResponseDTO<>(postService.savePost(dto), PostMessage.SAVE_POST_SUCCESS, HttpStatus.OK);
     }
 
@@ -53,7 +54,7 @@ public class PostController {
     }
 
     @PatchMapping("/posts")
-    public ResponseDTO<UpdatedPostDTO> updateOnePost(@Valid @RequestBody PostPatchRequestDTO dto, BindingResult result) {
+    public ResponseDTO<UpdatedPostDTO> updateOnePost(@Valid @RequestBody PostPatchRequestDTO dto) {
         return new ResponseDTO<>(postService.updateOnePost(dto), PostMessage.UPDATE_POST_SUCCESS, HttpStatus.OK);
     }
 

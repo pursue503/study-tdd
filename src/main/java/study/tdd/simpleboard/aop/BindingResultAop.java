@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
+import study.tdd.simpleboard.exception.common.GeneralParameterErrorCode;
 import study.tdd.simpleboard.exception.post.InvalidPostParameterException;
 import study.tdd.simpleboard.exception.post.PostCrudErrorCode;
 
@@ -32,7 +33,7 @@ public class BindingResultAop {
                 BindingResult result = (BindingResult) arg;
 
                 if (result.hasErrors()) {
-                    throw new InvalidPostParameterException(result, PostCrudErrorCode.POST_CRUD_FAIL);
+                    throw new InvalidPostParameterException(result, GeneralParameterErrorCode.INVALID_PARAMETER);
                 }
 
             }
