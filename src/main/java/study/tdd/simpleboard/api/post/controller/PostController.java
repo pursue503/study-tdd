@@ -39,7 +39,7 @@ public class PostController {
      * @return 성공적으로 저장된 게시물의 고유 아이디
      */
     @PostMapping("/posts")
-    public ResponseDTO<Long> savePost(@Valid @RequestBody PostSaveRequestDTO dto) {
+    public ResponseDTO<Long> savePost(@Valid @RequestBody PostSaveRequestDTO dto, BindingResult result) {
         return new ResponseDTO<>(postService.savePost(dto), PostMessage.SAVE_POST_SUCCESS, HttpStatus.OK);
     }
 
@@ -54,7 +54,7 @@ public class PostController {
     }
 
     @PatchMapping("/posts")
-    public ResponseDTO<UpdatedPostDTO> updateOnePost(@Valid @RequestBody PostPatchRequestDTO dto) {
+    public ResponseDTO<UpdatedPostDTO> updateOnePost(@Valid @RequestBody PostPatchRequestDTO dto, BindingResult result) {
         return new ResponseDTO<>(postService.updateOnePost(dto), PostMessage.UPDATE_POST_SUCCESS, HttpStatus.OK);
     }
 
