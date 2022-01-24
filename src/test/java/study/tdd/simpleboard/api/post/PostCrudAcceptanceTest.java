@@ -2,19 +2,25 @@ package study.tdd.simpleboard.api.post;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import study.tdd.simpleboard.api.post.domain.enums.PostMessage;
 
 import java.util.HashMap;
@@ -23,6 +29,8 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
+import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
 /**
  * 게시물 CRUD 인수 테스트
@@ -33,6 +41,8 @@ import static org.hamcrest.Matchers.equalTo;
  * @since 0.0.2 dev
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
+@AutoConfigureRestDocs
 public class PostCrudAcceptanceTest {
 
     @LocalServerPort
@@ -41,10 +51,20 @@ public class PostCrudAcceptanceTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    private RequestSpecification spec;
+
+//    @RegisterExtension
+//    private final RestDocumentationExtension restDocumentation = ;
+
     @BeforeEach
-    void setUp() {
+    void setUp(RestDocumentationContextProvider restDocumentation) {
         RestAssured.port = port;
+        this.spec = new RequestSpecBuilder().addFilter(
+                        documentationConfiguration(restDocumentation))
+                .build();
     }
+
+
 
     @Nested
     @DisplayName("게시물 저장 인수 테스트")
@@ -60,9 +80,10 @@ public class PostCrudAcceptanceTest {
             body.put("postContent", "게시물 내용 저장");
             body.put("image", "/image.png");
 
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
+                    .filter(document("post"))
                     .body(body).log().all();
 
             // 실행
@@ -89,7 +110,7 @@ public class PostCrudAcceptanceTest {
             body.put("postContent", postContent);
             body.put("image", image);
 
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
                     .body(body).log().all();
@@ -144,7 +165,7 @@ public class PostCrudAcceptanceTest {
             body.put("postContent", postContent);
             body.put("image", image);
 
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
                     .body(body).log().all();
@@ -173,7 +194,7 @@ public class PostCrudAcceptanceTest {
             @DisplayName("게시물 단건 조회 성공")
             void findOnePostSuccess() {
                 // 준비
-                RequestSpecification given = given()
+                RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(ContentType.JSON)
                         .log().all();
@@ -193,7 +214,7 @@ public class PostCrudAcceptanceTest {
             @DisplayName("게시물 단건 조회 실패 - 음수값을 가진 게시물 아이디 또는 BLOCK 처리된 게시물, 삭제된 게시물 등")
             void findOnePostFailure(Long postId) {
                 // 준비
-                RequestSpecification given = given()
+                RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(ContentType.JSON)
                         .log().all();
@@ -218,7 +239,7 @@ public class PostCrudAcceptanceTest {
             @DisplayName("게시물 페이징 조회 성공")
             void findOnePostSuccess() {
                 // 준비
-                RequestSpecification given = given()
+                RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(ContentType.JSON)
                         .param("page", 1).log().all();
@@ -238,7 +259,7 @@ public class PostCrudAcceptanceTest {
             @DisplayName("게시물 페이징 조회 실패 - 음수값을 가진 페이지 또는 페이지 수 초과")
             void findOnePostFailure(int requestedPageNumber) {
                 // 준비
-                RequestSpecification given = given()
+                RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(ContentType.JSON)
                         .param("page", requestedPageNumber).log().all();
@@ -269,7 +290,7 @@ public class PostCrudAcceptanceTest {
             body.put("postContent", "수정된 3번 게시물의 내용입니다.");
             body.put("image", "/newImage.png");
 
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
                     .body(body).log().all();
@@ -295,7 +316,7 @@ public class PostCrudAcceptanceTest {
             body.put("postContent", "수정된 N번 게시물의 내용입니다.");
             body.put("image", "/newImage.png");
 
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
                     .body(body).log().all();
@@ -320,7 +341,7 @@ public class PostCrudAcceptanceTest {
         @DisplayName("게시물 삭제 성공")
         void deleteOnePostSuccess() {
             // 준비
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
                     .log().all();
@@ -340,7 +361,7 @@ public class PostCrudAcceptanceTest {
         @DisplayName("게시물 삭제 실패 - 없는 게시물 번호, 또는 BLOCK 된 게시물")
         void deleteOnePostFailure(Long postId) {
             // 준비
-            RequestSpecification given = given()
+            RequestSpecification given = given(PostCrudAcceptanceTest.this.spec)
                     .accept(MediaType.APPLICATION_JSON_VALUE)
                     .contentType(ContentType.JSON)
                     .log().all();
